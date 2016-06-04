@@ -1,10 +1,11 @@
 package utilities
 
+
 import spray.routing.SimpleRoutingApp
-import akka.actor.{PoisonPill, ActorRef, Actor, Props}
+import akka.actor._
 import org.apache.spark.SparkContext
 import org.apache.spark.streaming.{Milliseconds, StreamingContext}
-import utilities.SparkHelper.{KillActor, InitializeStream}
+import utilities.SparkHelper.{InitializeStream, KillActor}
 import utilities.TwitterHelper.{StartCollecting, ProduceTweetToKafka, Tweet}
 //import twitter4j.TwitterStreamFactory
 import akka.pattern.gracefulStop
@@ -15,6 +16,7 @@ import scala.concurrent.duration._
   */
 class SupervisorActor(sc :SparkContext, settings: InsiderSettings) extends Actor with SimpleRoutingApp{
 
+  case class searchParams(key:String, keytype:String)
   import settings._
 
 
@@ -29,6 +31,7 @@ class SupervisorActor(sc :SparkContext, settings: InsiderSettings) extends Actor
 
     case InitializeStream(s) =>
       context.actorOf(Props(new KafkaStreamingActor(ssc, settings, s, self)), s)
+      println(s, "streaming initialized")
 
     case KillActor(s) =>
       val toKillActor = context.actorSelection("/user/supervisor-actor/"+s)
@@ -42,5 +45,21 @@ class SupervisorActor(sc :SparkContext, settings: InsiderSettings) extends Actor
     context.children foreach (c => gracefulStop(c, 2.seconds))
   }
 
+  implicit val actorSystem = ActorSystem()
 
-}
+  import actorSystem.dispatcher
+  startServer(interface = "localhost", port = 8080) {
+    post {
+      path("search" / "twitter") {
+        parameters("keyword".as[String]) { (keyword ) =>
+           self ! InitializeStream(keyword)
+          complete {
+            "OK"
+
+          }
+        }
+      }
+    }
+
+    }
+  }

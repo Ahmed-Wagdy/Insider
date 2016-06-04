@@ -22,8 +22,6 @@ libraryDependencies += "org.apache.spark" % "spark-streaming_2.10" % "1.6.1"
 
 libraryDependencies += "com.typesafe.akka" %% "akka-actor" % "2.3.15"
 
-libraryDependencies += "com.typesafe.akka" %% "akka-remote" % "2.3.15"
-
 libraryDependencies += "com.google.code.gson" % "gson" % "2.6.2"
 
 libraryDependencies ++= {

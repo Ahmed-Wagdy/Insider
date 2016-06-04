@@ -30,13 +30,6 @@ class KafkaStreamingActor(ssc :StreamingContext, settings: InsiderSettings, topi
 
     //create a stream for each kafka partition to parallelize the read process from kafka
     val streams = (1 to noOfPartitions) map { _ =>
-
-      //create a stream from the beginning of topic
-//      KafkaUtils.createDirectStream[String, String, StringDecoder, StringDecoder, String](ssc,
-//        kafkaParams,
-//        Map(topics -> 1L),
-//        (mmd: MessageAndMetadata[String, String]) => mmd.message())
-
       //create a stream from last offset
       KafkaUtils.createDirectStream[String, String, StringDecoder, StringDecoder](ssc, kafkaParams, Set(topic)).map(_._2)
     }
@@ -57,7 +50,11 @@ class KafkaStreamingActor(ssc :StreamingContext, settings: InsiderSettings, topi
 
   //  kafkaStream.map(gson.fromJson(_, classOf[Tweet]).source).filter(_.contains("iPhone")).print()
 
-  kafkaStream.saveAsTextFiles("test1")
+//  kafkaStream.saveAsTextFiles("test1")
+
+  kafkaStream.foreachRDD { rdd =>
+    println(rdd.first())
+  }
 
   ssc.start()
   ssc.checkpoint(streamingCheckpoint) // a check point must be specified for spark streaming
