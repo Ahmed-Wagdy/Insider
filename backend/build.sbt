@@ -24,6 +24,8 @@ libraryDependencies += "com.typesafe.akka" %% "akka-actor" % "2.3.15"
 
 libraryDependencies += "com.google.code.gson" % "gson" % "2.6.2"
 
+compileOrder := CompileOrder.JavaThenScala
+
 libraryDependencies ++= {
 
   val sprayV = "1.3.2"
@@ -31,8 +33,6 @@ libraryDependencies ++= {
     "io.spray"            %%  "spray-routing" % sprayV withSources() withJavadoc(),
     "io.spray"            %%  "spray-client"     % sprayV withSources() withJavadoc(),
     "org.json4s"          %%  "json4s-native"  % "3.2.10"
-
-
   )
 }
 
