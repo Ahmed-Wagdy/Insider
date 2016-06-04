@@ -8,4 +8,7 @@ object SparkHelper {
   case class InitializeStream(s :String)
 
   case class KillActor(s :String)
+
+  case class senResult(var posCount:Int,var negCount:Int)
+
 }

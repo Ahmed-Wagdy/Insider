@@ -1,11 +1,13 @@
 package utilities
 
 
+import org.json4s.native.Serialization
+import org.json4s.ShortTypeHints
 import spray.routing.SimpleRoutingApp
 import akka.actor._
 import org.apache.spark.SparkContext
 import org.apache.spark.streaming.{Milliseconds, StreamingContext}
-import utilities.SparkHelper.{InitializeStream, KillActor}
+import utilities.SparkHelper.{senResult, InitializeStream, KillActor}
 import utilities.TwitterHelper.{StartCollecting, ProduceTweetToKafka, Tweet}
 //import twitter4j.TwitterStreamFactory
 import akka.pattern.gracefulStop
@@ -16,7 +18,13 @@ import scala.concurrent.duration._
   */
 class SupervisorActor(sc :SparkContext, settings: InsiderSettings) extends Actor with SimpleRoutingApp{
 
-  case class searchParams(key:String, keytype:String)
+
+  private implicit val formats = Serialization.formats(ShortTypeHints(List(classOf[senResult])))
+
+  def toJson(result: senResult): String = Serialization.writePretty(result)
+
+  val topicsMap = scala.collection.mutable.Map[String,senResult]()
+
   import settings._
 
 
@@ -47,12 +55,24 @@ class SupervisorActor(sc :SparkContext, settings: InsiderSettings) extends Actor
 
   implicit val actorSystem = ActorSystem()
 
-  import actorSystem.dispatcher
   startServer(interface = "localhost", port = 8080) {
+
+    get {
+      path("getresult" / Segment ) { topic =>
+        complete{
+//          topicsMap(topic).posCount=1
+          toJson(topicsMap(topic))
+
+
+        }
+      }
+    } ~
     post {
       path("search" / "twitter") {
         parameters("keyword".as[String]) { (keyword ) =>
            self ! InitializeStream(keyword)
+          topicsMap += keyword -> senResult(0,0)
+
           complete {
             "OK"
 
