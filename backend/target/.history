@@ -1,0 +1,11 @@
+sbt name
+name
+set scalaVersion := 2.10.4
+~compile
+reload
+compile
+sbt tasks
+tasks
+update
+compile
+update
