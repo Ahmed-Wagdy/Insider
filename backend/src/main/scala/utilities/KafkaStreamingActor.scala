@@ -53,7 +53,7 @@ class KafkaStreamingActor(ssc :StreamingContext, settings: InsiderSettings, topi
 //  kafkaStream.saveAsTextFiles("test1")
 
   kafkaStream.foreachRDD { rdd =>
-    println(rdd.first())
+    //rdd.map(tweet => ) add to cassandra & apply algorithm
   }
 
   ssc.start()
