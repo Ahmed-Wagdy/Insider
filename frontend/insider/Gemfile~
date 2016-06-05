@@ -24,13 +24,6 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 # Kafka Gem
 gem 'ruby-kafka'
 
-#wikipedia
-gem 'wikipedia-client'
-#ebay
-gem 'rebay'
-#amazon
-gem 'vacuum'
-
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 
