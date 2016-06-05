@@ -17,6 +17,7 @@
       <sourceFolder url="file://$MODULE_DIR$/../../target/scala-2.10/resource_managed/main" type="java-resource" />
       <sourceFolder url="file://$MODULE_DIR$/../../src/test/resources" type="java-test-resource" />
       <sourceFolder url="file://$MODULE_DIR$/../../target/scala-2.10/resource_managed/test" type="java-test-resource" />
+      <excludeFolder url="file://$MODULE_DIR$/../../target" />
       <excludeFolder url="file://$MODULE_DIR$/../../target/resolution-cache" />
       <excludeFolder url="file://$MODULE_DIR$/../../target/streams" />
     </content>
@@ -51,6 +52,7 @@
     <orderEntry type="library" name="SBT: com.twitter:chill_2.10:0.5.0:jar" level="project" />
     <orderEntry type="library" name="SBT: com.typesafe:config:1.2.1:jar" level="project" />
     <orderEntry type="library" name="SBT: com.typesafe.akka:akka-actor_2.10:2.3.15:jar" level="project" />
+    <orderEntry type="library" name="SBT: com.typesafe.akka:akka-remote_2.10:2.3.11:jar" level="project" />
     <orderEntry type="library" name="SBT: com.typesafe.akka:akka-slf4j_2.10:2.3.11:jar" level="project" />
     <orderEntry type="library" name="SBT: com.yammer.metrics:metrics-core:2.2.0:jar" level="project" />
     <orderEntry type="library" name="SBT: commons-beanutils:commons-beanutils:1.7.0:jar" level="project" />
@@ -146,6 +148,7 @@
     <orderEntry type="library" name="SBT: org.scala-lang:scala-reflect:2.10.4:jar" level="project" />
     <orderEntry type="library" name="SBT: org.slf4j:jcl-over-slf4j:1.7.10:jar" level="project" />
     <orderEntry type="library" name="SBT: org.slf4j:jul-to-slf4j:1.7.10:jar" level="project" />
+    <orderEntry type="library" name="SBT: org.slf4j:slf4j-api:1.7.2:jar" level="project" />
     <orderEntry type="library" name="SBT: org.slf4j:slf4j-log4j12:1.7.10:jar" level="project" />
     <orderEntry type="library" name="SBT: org.sonatype.sisu.inject:cglib:2.2.1-v20090111:jar" level="project" />
     <orderEntry type="library" name="SBT: org.spark-project.spark:unused:1.0.0:jar" level="project" />
@@ -166,38 +169,28 @@
         <CLASSES />
         <JAVADOC />
         <SOURCES>
-          <root url="jar://$USER_HOME$/.ivy2/cache/org.apache.avro/avro-mapred/srcs/avro-mapred-1.7.7-sources.jar!/" />
           <root url="jar://$USER_HOME$/.ivy2/cache/com.esotericsoftware.reflectasm/reflectasm/srcs/reflectasm-1.07-sources.jar!/" />
+          <root url="jar://$USER_HOME$/.ivy2/cache/org.apache.avro/avro-mapred/srcs/avro-mapred-1.7.7-sources.jar!/" />
           <root url="jar://$USER_HOME$/.ivy2/cache/org.apache.mesos/mesos/srcs/mesos-0.21.1-sources.jar!/" />
         </SOURCES>
       </library>
     </orderEntry>
-    <orderEntry type="library" name="SBT: com.typesafe.akka:akka-remote_2.10:2.3.11:jar" level="project" />
-    <orderEntry type="library" name="SBT: org.slf4j:slf4j-api:1.7.2:jar" level="project" />
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$USER_HOME$/Downloads/lingpipe-2.4.0.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
     <orderEntry type="module-library">
       <library>
         <CLASSES>
           <root url="jar://$USER_HOME$/Downloads/commons-math-1.1.jar!/" />
-          <root url="jar://$USER_HOME$/Downloads/lingpipe-2.4.0.jar!/" />
-          <root url="file://$USER_HOME$/Downloads" />
-          <root url="file://$USER_HOME$/Downloads" />
         </CLASSES>
-        <JAVADOC>
-          <root url="file://$USER_HOME$/Downloads/jxbrowser-6.2-cross-desktop-win_mac_linux/doc/javadoc" />
-        </JAVADOC>
-        <SOURCES>
-          <root url="file://$USER_HOME$/Downloads" />
-          <root url="file://$USER_HOME$/Downloads" />
-          <root url="file://$USER_HOME$/Downloads/Article_src/jMessenger/src" />
-          <root url="file://$USER_HOME$/Downloads/Article_src/jServer/src" />
-          <root url="file://$USER_HOME$/Downloads/Chat/_ChatServer_2/src" />
-          <root url="file://$USER_HOME$/Downloads/Chat/__ChatClient__2/src" />
-          <root url="file://$USER_HOME$/Downloads/Client/src" />
-          <root url="file://$USER_HOME$/Downloads/project/newclient1/src" />
-          <root url="file://$USER_HOME$/Downloads/project/newserver/src" />
-        </SOURCES>
-        <jarDirectory url="file://$USER_HOME$/Downloads" recursive="false" />
-        <jarDirectory url="file://$USER_HOME$/Downloads" recursive="false" type="SOURCES" />
+        <JAVADOC />
+        <SOURCES />
       </library>
     </orderEntry>
   </component>
