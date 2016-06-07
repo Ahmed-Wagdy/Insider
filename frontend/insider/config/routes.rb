@@ -1,6 +1,7 @@
 Rails.application.routes.draw do
   get 'api/index'
-
+  get 'api/searchList'
+  get 'api/tweetsAnalysis'
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
