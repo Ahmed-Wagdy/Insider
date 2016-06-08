@@ -1,9 +1,8 @@
 class ApiController < ApplicationController
   def index
-  	# wikipedia API
-	require 'wikipedia'
-	query = 'iphone'
-  	@page = Wikipedia.find( query )
+
+   	# wikipedia API
+	 require 'wikipedia'
 
   	# amazon API
 	require 'vacuum'
@@ -13,19 +12,15 @@ class ApiController < ApplicationController
 	    aws_secret_access_key: 'VcRYEPlZZBhUBtBjQrfpInFnXCOFxg85OM/ljWs/',
 	    associate_tag: 'tag'
 	)
-	@response = request.item_search(
-	  query: {
-	    'Keywords' => query,
-	    'SearchIndex' => 'All'
-	  }
-	)
-	asin = @response.to_h['ItemSearchResponse']['Items']['Item'][0]['ASIN']
-	@result = request.item_lookup(
-	  query: {
-	    'ItemId' => asin
-	  }
-	)
-	@item = @result.to_h['ItemLookupResponse']['Items']['Item']
+	
+	#asin = @response.to_h['ItemSearchResponse']['Items']['Item'][0]['ASIN']
+	
+
+	#get reviews
+	require 'net/http'
+	require 'uri'
+	require 'open-uri' 
+
 
 	# foursquare API
 	fs_client = Foursquare2::Client.new(:client_id => 'DFE2PJPNV0TVYZJ4ZPIUBHW4HQODKZPSYC5VOBC4BZWPZ5TK', :client_secret => 'IGACMN05NXCYRXTIMUAX0NOZZEUBKBWJLLMHYANXKBZEUHJH',:oauth_token => 'SNSENWFLDJNXMO54XDUOBIOVS4YRBX1RNAHCWJNQ4IVCDA2T',:api_version => '20140806')
@@ -46,9 +41,12 @@ class ApiController < ApplicationController
 	Rails.cache.write('twitter_client',twitter_client)
   end
 
-  def searchListPlace
+  def searchList
   	query = params[:query]
   	type = params[:type]
+
+  	@query_summary = Wikipedia.find( query )
+
   	if type == 'place'
   		require "net/http"
 		require "uri"
@@ -62,36 +60,32 @@ class ApiController < ApplicationController
 		location = JSON.parse(response.body)
 		geo = location["latitude"].to_s + ',' + location["latitude"].to_s
 		@places = fs_client.search_venues(:ll => geo, :query => query)
-		byebug
+		#byebug
   	elsif type == 'product'
-  		
+  		@response = request.item_search(
+		  query: {
+		    'Keywords' => query,
+		    'SearchIndex' => 'All'
+		  }
+		)
   	end
   	
 	end
-	def searchListProduct
-		query = params[:query]
-		type = params[:type]
-		if type == 'place'
-			require "net/http"
-			require "uri"
-			fs_client = Rails.cache.read("fs_client")
-			# byebug
-			# client_ip = request.remote_ip
-			# client_ip = '41.234.19.65'
-			client_ip = '81.21.107.92'
-			uri = URI.parse('http://freegeoip.net/json/'+client_ip)
-			response = Net::HTTP.get_response(uri)
-			location = JSON.parse(response.body)
-			geo = location["latitude"].to_s + ',' + location["latitude"].to_s
-			@places = fs_client.search_venues(:ll => geo, :query => query)
-			byebug
-		elsif type == 'product'
-
-		end
-
-	end
-
   def searchProfile
+  	type = params[:type]
+  	itemid = params[:itemid]
+
+  	if type == 'place'
+
+  	elsif type == 'product'
+  		@result = request.item_lookup(
+		  query: {
+		    'ItemId' => itemid
+		  }
+		)
+	@item = @result.to_h['ItemLookupResponse']['Items']['Item']
+	#@doc = Nokogiri::HTML(open(@item['ItemLinks']['ItemLink'][2]['URL']))
+  	end
   end
 
   def tweetsAnalysis

@@ -1,8 +1,22 @@
+<html>
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
+</head>
+<body>
+<%=@doc%>
 <h1>Api#index</h1>
 <p>Find me in app/views/api/index.html.erb</p>
-count = 0
+<div id="hidiv">
 <% @page.summary.split('.').each_with_index do |tt,i|%>
 	<%if i<=4 %>
 		<%=tt%>
 	<%end%>
 <%end%>
+</div>
+<button id="seemore">see more</button>
+<script>
+$("#seemore").click(function(){
+	$("#hidiv").html('<%= escape_javascript @page.summary %>');
+	$("#seemore").hide();
+});
+</script>
