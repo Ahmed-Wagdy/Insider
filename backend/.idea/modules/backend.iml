@@ -174,31 +174,5 @@
     </orderEntry>
     <orderEntry type="library" name="SBT: com.typesafe.akka:akka-remote_2.10:2.3.11:jar" level="project" />
     <orderEntry type="library" name="SBT: org.slf4j:slf4j-api:1.7.2:jar" level="project" />
-    <orderEntry type="module-library">
-      <library>
-        <CLASSES>
-          <root url="jar://$USER_HOME$/Downloads/commons-math-1.1.jar!/" />
-          <root url="jar://$USER_HOME$/Downloads/lingpipe-2.4.0.jar!/" />
-          <root url="file://$USER_HOME$/Downloads" />
-          <root url="file://$USER_HOME$/Downloads" />
-        </CLASSES>
-        <JAVADOC>
-          <root url="file://$USER_HOME$/Downloads/jxbrowser-6.2-cross-desktop-win_mac_linux/doc/javadoc" />
-        </JAVADOC>
-        <SOURCES>
-          <root url="file://$USER_HOME$/Downloads" />
-          <root url="file://$USER_HOME$/Downloads" />
-          <root url="file://$USER_HOME$/Downloads/Article_src/jMessenger/src" />
-          <root url="file://$USER_HOME$/Downloads/Article_src/jServer/src" />
-          <root url="file://$USER_HOME$/Downloads/Chat/_ChatServer_2/src" />
-          <root url="file://$USER_HOME$/Downloads/Chat/__ChatClient__2/src" />
-          <root url="file://$USER_HOME$/Downloads/Client/src" />
-          <root url="file://$USER_HOME$/Downloads/project/newclient1/src" />
-          <root url="file://$USER_HOME$/Downloads/project/newserver/src" />
-        </SOURCES>
-        <jarDirectory url="file://$USER_HOME$/Downloads" recursive="false" />
-        <jarDirectory url="file://$USER_HOME$/Downloads" recursive="false" type="SOURCES" />
-      </library>
-    </orderEntry>
   </component>
 </module>

@@ -1,6 +1,7 @@
 [debug] Other repositories:
 [debug] Default repositories:
 [debug] Using inline dependencies specified in Scala.
+[debug] no default cache defined: set to /home/ahmed/.ivy2/cache
 [debug] :: resolving dependencies :: utilities#utilities$sbt_2.10;1.0
 [debug] 	confs: [default]
 [debug] 	validate = true
@@ -224,7 +225,6 @@
 [debug] == resolving dependencies org.scala-sbt#compile;0.13.8->org.scala-sbt#classfile;0.13.8 [compile->default(compile)]
 [info] Resolving org.scala-sbt#classfile;0.13.8 ...
 [debug] sbt-chain: Checking cache for: dependency: org.scala-sbt#classfile;0.13.8 {compile=[default(compile)]}
-[debug] no default cache defined: set to /home/ahmed/.ivy2/cache
 [debug] sbt-chain: module revision found in cache: org.scala-sbt#classfile;0.13.8
 [debug] 	found org.scala-sbt#classfile;0.13.8 in sbt-chain
 [debug] == resolving dependencies org.scala-sbt#classfile;0.13.8->org.scala-lang#scala-library;2.10.4 [compile->default(compile)]
@@ -754,9 +754,9 @@
 [debug] 	[NOT REQUIRED] org.scala-sbt#test-agent;0.13.8!test-agent.jar
 [debug] 	[NOT REQUIRED] org.scala-sbt#test-interface;1.0!test-interface.jar
 [debug] 	[NOT REQUIRED] org.scala-sbt#apply-macro;0.13.8!apply-macro.jar
-[debug] :: resolution report :: resolve 1946ms :: artifacts dl 281ms
+[debug] :: resolution report :: resolve 2120ms :: artifacts dl 85ms
 [debug] 	report for utilities#utilities$sbt_2.10;1.0 default produced in /run/media/ahmed/Data/ITI/gp/Insider/backend/target/resolution-cache/reports/utilities-utilities$sbt_2.10-default.xml
-[debug] 	resolve done (1946ms resolve - 281ms download)
+[debug] 	resolve done (2120ms resolve - 85ms download)
 [debug] Using inline dependencies specified in Scala.
 [debug] :: resolving dependencies :: utilities#utilities$sources_2.10;1.0
 [debug] 	confs: [default]
@@ -1120,6 +1120,6 @@
 [debug] 	[NOT REQUIRED] org.scala-sbt#precompiled-2_8_2;0.13.8!precompiled-2_8_2.jar(src)
 [debug] 	[NOT REQUIRED] org.scala-sbt#precompiled-2_9_2;0.13.8!precompiled-2_9_2.jar(src)
 [debug] 	[NOT REQUIRED] org.scala-sbt#precompiled-2_9_3;0.13.8!precompiled-2_9_3.jar(src)
-[debug] :: resolution report :: resolve 408ms :: artifacts dl 44ms
+[debug] :: resolution report :: resolve 621ms :: artifacts dl 62ms
 [debug] 	report for utilities#utilities$sources_2.10;1.0 default produced in /run/media/ahmed/Data/ITI/gp/Insider/backend/target/resolution-cache/reports/utilities-utilities$sources_2.10-default.xml
-[debug] 	resolve done (408ms resolve - 44ms download)
+[debug] 	resolve done (621ms resolve - 62ms download)
