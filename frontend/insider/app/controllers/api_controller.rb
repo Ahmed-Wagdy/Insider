@@ -61,6 +61,8 @@ class ApiController < ApplicationController
 		location = JSON.parse(response.body)
 		geo = location["latitude"].to_s + ',' + location["longitude"].to_s
 		@places = fs_client.search_venues(:ll => geo, :query => query)
+		byebug
+		render 'searchListPlace'
   	elsif type == 'product'
   		amazon_request = Rails.cache.read("amazon_request")
   		@response = amazon_request.item_search(
@@ -69,8 +71,8 @@ class ApiController < ApplicationController
 		    'SearchIndex' => 'All'
 		  }
 		)
+		render 'searchListProduct'
   	end
-  	byebug
 	end
 
   def searchProfile
