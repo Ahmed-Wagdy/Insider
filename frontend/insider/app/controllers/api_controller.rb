@@ -6,12 +6,13 @@ class ApiController < ApplicationController
 
   	# amazon API
 	require 'vacuum'
-	request = Vacuum.new('UK')
-	request.configure(
+	amazon_request = Vacuum.new('UK')
+	amazon_request.configure(
 	    aws_access_key_id: 'AKIAIOFOSMSJUOFHJX5A',
 	    aws_secret_access_key: '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',
 	    associate_tag: 'tag'
 	)
+	Rails.cache.write("amazon_request",amazon_request)
 	
 	#asin = @response.to_h['ItemSearchResponse']['Items']['Item'][0]['ASIN']
 	
@@ -44,39 +45,40 @@ class ApiController < ApplicationController
   def searchList
   	query = params[:query]
   	type = params[:type]
-
+  	# require 'wikipedia'
   	@query_summary = Wikipedia.find( query )
 
   	if type == 'place'
   		require "net/http"
 		require "uri"
 		fs_client = Rails.cache.read("fs_client")
-		# byebug
 		# client_ip = request.remote_ip
-		# client_ip = '41.234.19.65'
-		client_ip = '81.21.107.92'
+		client_ip = '41.234.17.232'
 		uri = URI.parse('http://freegeoip.net/json/'+client_ip)
 		response = Net::HTTP.get_response(uri)
 		location = JSON.parse(response.body)
-		geo = location["latitude"].to_s + ',' + location["latitude"].to_s
+		geo = location["latitude"].to_s + ',' + location["longitude"].to_s
 		@places = fs_client.search_venues(:ll => geo, :query => query)
-		#byebug
   	elsif type == 'product'
-  		@response = request.item_search(
+  		amazon_request = Rails.cache.read("amazon_request")
+  		@response = amazon_request.item_search(
 		  query: {
 		    'Keywords' => query,
 		    'SearchIndex' => 'All'
 		  }
 		)
   	end
-  	
+  	byebug
 	end
+
   def searchProfile
   	type = params[:type]
   	itemid = params[:itemid]
 
   	if type == 'place'
-
+  		fs_client = Rails.cache.read("fs_client")
+  		@item = fs_client.venue(itemid)
+  		byebug
   	elsif type == 'product'
   		@result = request.item_lookup(
 		  query: {
