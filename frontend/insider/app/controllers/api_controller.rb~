@@ -1,0 +1,39 @@
+class ApiController < ApplicationController
+  def index
+	require 'wikipedia'
+  	@page = Wikipedia.find( 'iphone' )
+
+	require 'vacuum'
+	request = Vacuum.new('UK')
+	request.configure(
+	    aws_access_key_id: 'AKIAIOFOSMSJUOFHJX5A',
+	    aws_secret_access_key: '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',
+	    associate_tag: 'tag'
+	)
+	@response = request.item_search(
+	  query: {
+	    'Keywords' => 'sony',
+	    'SearchIndex' => 'All'
+	  }
+	)
+	asin = @response.to_h['ItemSearchResponse']['Items']['Item'][0]['ASIN']
+	@result = request.item_lookup(
+	  query: {
+	    'ItemId' => asin
+	  }
+	)
+	@item = @result.to_h['ItemLookupResponse']['Items']['Item']
+
+	#get reviews
+	require 'net/http'
+	require 'uri'
+
+	#url = URI.parse(@item['ItemLinks']['ItemLink'][2]['URL'])
+	#res = Net::HTTP.get_response(url)
+	#@data = Hash.from_xml(res.to_s).to_json
+
+	require 'open-uri'
+	doc = Nokogiri::HTML(open(@item['ItemLinks']['ItemLink'][2]['URL']))
+	 
+  end
+end

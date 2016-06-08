@@ -4,7 +4,11 @@
 		module="utilities$sources_2.10"
 		revision="1.0"
 		status="integration"
+<<<<<<< HEAD
 		publication="20160606194651"
+=======
+		publication="20160604205934"
+>>>>>>> 577317faf3bf782041dde118b3362369319eb428
 	/>
 	<configurations>
 		<conf name="compile" visibility="public" description=""/>

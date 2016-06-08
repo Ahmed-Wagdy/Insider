@@ -1,4 +1,12 @@
 Rails.application.routes.draw do
+  resources :posts
+  get 'api/index'
+  get 'api/searchList'
+  get 'api/searchProfile'
+  get 'api/tweetsAnalysis'
+
+  # root 'posts#index'
+
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
