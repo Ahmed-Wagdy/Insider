@@ -7,12 +7,14 @@ class ApiController < ApplicationController
   	# amazon API
 	require 'vacuum'
 	amazon_request = Vacuum.new('UK')
-	amazon_request.configure(
-	    aws_access_key_id: 'AKIAIOFOSMSJUOFHJX5A',
-	    aws_secret_access_key: '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',
-	    associate_tag: 'tag'
-	)
+	#hast it on git hub only for keys
+	# amazon_request.configure(
+	#     aws_access_key_id: 'AKIAIOFOSMSJUOFHJX5A',
+	#     aws_secret_access_key: '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',
+	#     associate_tag: 'tag'
+	# )
 	Rails.cache.write("amazon_request",amazon_request)
+	
 	
 	#asin = @response.to_h['ItemSearchResponse']['Items']['Item'][0]['ASIN']
 	
