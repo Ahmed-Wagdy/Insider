@@ -1,31 +1,31 @@
 class ApiController < ApplicationController
   def index
- #  	# wikipedia API
-	# require 'wikipedia'
-	# query = 'iphone'
- #  	@page = Wikipedia.find( query )
+  	# wikipedia API
+	require 'wikipedia'
+	query = 'iphone'
+  	@page = Wikipedia.find( query )
 
- #  	# amazon API
-	# require 'vacuum'
-	# request = Vacuum.new('UK')
-	# request.configure(
-	#     aws_access_key_id: 'AKIAIOFOSMSJUOFHJX5A',
-	#     aws_secret_access_key: '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',
-	#     associate_tag: 'tag'
-	# )
-	# @response = request.item_search(
-	#   query: {
-	#     'Keywords' => query,
-	#     'SearchIndex' => 'All'
-	#   }
-	# )
-	# asin = @response.to_h['ItemSearchResponse']['Items']['Item'][0]['ASIN']
-	# @result = request.item_lookup(
-	#   query: {
-	#     'ItemId' => asin
-	#   }
-	# )
-	# @item = @result.to_h['ItemLookupResponse']['Items']['Item']
+  	# amazon API
+	require 'vacuum'
+	request = Vacuum.new('UK')
+	request.configure(
+	    aws_access_key_id: 'AKIAIOFOSMSJUOFHJX5A',
+	    aws_secret_access_key: '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',
+	    associate_tag: 'tag'
+	)
+	@response = request.item_search(
+	  query: {
+	    'Keywords' => query,
+	    'SearchIndex' => 'All'
+	  }
+	)
+	asin = @response.to_h['ItemSearchResponse']['Items']['Item'][0]['ASIN']
+	@result = request.item_lookup(
+	  query: {
+	    'ItemId' => asin
+	  }
+	)
+	@item = @result.to_h['ItemLookupResponse']['Items']['Item']
 
 	# foursquare API
 	fs_client = Foursquare2::Client.new(:client_id => 'DFE2PJPNV0TVYZJ4ZPIUBHW4HQODKZPSYC5VOBC4BZWPZ5TK', :client_secret => 'IGACMN05NXCYRXTIMUAX0NOZZEUBKBWJLLMHYANXKBZEUHJH',:oauth_token => 'SNSENWFLDJNXMO54XDUOBIOVS4YRBX1RNAHCWJNQ4IVCDA2T',:api_version => '20140806')
@@ -64,8 +64,12 @@ class ApiController < ApplicationController
 		@places = fs_client.search_venues(:ll => geo, :query => query)
 		byebug
   	elsif type == 'product'
+  		
   	end
   	
+  end
+
+  def searchProfile
   end
 
   def tweetsAnalysis
