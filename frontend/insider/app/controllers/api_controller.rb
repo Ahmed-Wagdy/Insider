@@ -7,11 +7,12 @@ class ApiController < ApplicationController
   	# amazon API
 	require 'vacuum'
 	request = Vacuum.new('UK')
-	request.configure(
-	    aws_access_key_id: 'AKIAIOFOSMSJUOFHJX5A',
-	    aws_secret_access_key: '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',
-	    associate_tag: 'tag'
-	)
+	#hast it on git hub only for keys
+	#request.configure(
+	 #   aws_access_key_id: 'AKIAIOFOSMSJUOFHJX5A',
+	  #  aws_secret_access_key: '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',
+	   # associate_tag: 'tag'
+	#)
 	
 	#asin = @response.to_h['ItemSearchResponse']['Items']['Item'][0]['ASIN']
 	
