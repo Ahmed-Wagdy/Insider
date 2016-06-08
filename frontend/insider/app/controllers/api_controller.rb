@@ -71,8 +71,7 @@ class ApiController < ApplicationController
 		)
   	end
   	
-  end
-
+	end
   def searchProfile
   	type = params[:type]
   	itemid = params[:itemid]

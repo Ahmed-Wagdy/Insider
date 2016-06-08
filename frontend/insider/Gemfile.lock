@@ -38,8 +38,13 @@ GEM
       tzinfo (~> 1.1)
     addressable (2.4.0)
     arel (6.0.3)
+    autoprefixer-rails (6.3.6)
+      execjs
     binding_of_caller (0.7.2)
       debug_inspector (>= 0.0.1)
+    bootstrap (4.0.0.alpha3)
+      autoprefixer-rails (>= 6.0.3)
+      sass (>= 3.4.19)
     buftok (0.2.0)
     builder (3.2.2)
     byebug (9.0.5)
@@ -67,6 +72,8 @@ GEM
       multipart-post (>= 1.2, < 3)
     faraday_middleware (0.10.0)
       faraday (>= 0.7.4, < 0.10)
+    font-awesome-rails (4.6.1.0)
+      railties (>= 3.2, < 5.1)
     foursquare2 (2.0.2)
       faraday (~> 0.8)
       faraday_middleware (>= 0.8)
@@ -202,9 +209,11 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  bootstrap (~> 4.0.0.alpha3)
   byebug
   cequel
   coffee-rails (~> 4.1.0)
+  font-awesome-rails
   foursquare2
   jbuilder (~> 2.0)
   jquery-rails
