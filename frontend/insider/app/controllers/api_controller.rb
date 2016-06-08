@@ -46,7 +46,7 @@ class ApiController < ApplicationController
 	Rails.cache.write('twitter_client',twitter_client)
   end
 
-  def searchList
+  def searchListPlace
   	query = params[:query]
   	type = params[:type]
   	if type == 'place'
@@ -67,7 +67,29 @@ class ApiController < ApplicationController
   		
   	end
   	
-  end
+	end
+	def searchListProduct
+		query = params[:query]
+		type = params[:type]
+		if type == 'place'
+			require "net/http"
+			require "uri"
+			fs_client = Rails.cache.read("fs_client")
+			# byebug
+			# client_ip = request.remote_ip
+			# client_ip = '41.234.19.65'
+			client_ip = '81.21.107.92'
+			uri = URI.parse('http://freegeoip.net/json/'+client_ip)
+			response = Net::HTTP.get_response(uri)
+			location = JSON.parse(response.body)
+			geo = location["latitude"].to_s + ',' + location["latitude"].to_s
+			@places = fs_client.search_venues(:ll => geo, :query => query)
+			byebug
+		elsif type == 'product'
+
+		end
+
+	end
 
   def searchProfile
   end
