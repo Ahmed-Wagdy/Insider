@@ -23,32 +23,7 @@
     margin-top: -60px;
   }
 </style>
-<div class="row">
-  <div class="seacrhBar">
-    <form class="form-horizontal    ">
-      <div class="form-group">
-        <div class="col-sm-10 col-sm-offset-1">
-          <input type="text" class="form-control" id="inputEmail3" placeholder="Search">
-          <div class="checkbox">
-            <label>
-              <input type="radio"name="searchType" value="">Product
-            </label>
-            <label>
-              <input type="radio" name="searchType" value="">Places
-            </label>
-          </div>
-
-        </div>
-      </div>
-      <div class="form-group">
-        <div class="col-sm-offset-1 col-sm-10">
-          <button type="submit" class="btn btn-danger ">Search</button>
-        </div>
-      </div>
-    </form>
-
-  </div>
-</div>
+<%= render 'searchForm' %>
 
 <div class="row">
   <div class="col-lg-8 mylist">
@@ -63,6 +38,9 @@
   <div class="desc">Dummy data about the site that will be reviewdDummy data about the site that will be reviewdDummy data about the site that will be reviewd </div>
 </div>
 </div>
-<%= @places.each do |place| %>
-<%= place.id %>
+<% @places.each do |place| %>
+<%= place.name %>
+<br>
+<%= place.location %>
+<br>
 <% end %>
