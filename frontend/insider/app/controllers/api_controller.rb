@@ -23,5 +23,17 @@ class ApiController < ApplicationController
 	  }
 	)
 	@item = @result.to_h['ItemLookupResponse']['Items']['Item']
+
+	#get reviews
+	require 'net/http'
+	require 'uri'
+
+	#url = URI.parse(@item['ItemLinks']['ItemLink'][2]['URL'])
+	#res = Net::HTTP.get_response(url)
+	#@data = Hash.from_xml(res.to_s).to_json
+
+	require 'open-uri'
+	@doc = Nokogiri::HTML(open(@item['ItemLinks']['ItemLink'][2]['URL']))
+	 
   end
 end
