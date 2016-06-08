@@ -3,11 +3,8 @@ class ApiController < ApplicationController
 
    	# wikipedia API
 	 require 'wikipedia'
-	 query = 'iphone'
- 	 @page = Wikipedia.find( query )
 
-
-	# amazon API
+  	# amazon API
 	require 'vacuum'
 	request = Vacuum.new('UK')
 	request.configure(
@@ -15,31 +12,15 @@ class ApiController < ApplicationController
 	    aws_secret_access_key: 'VcRYEPlZZBhUBtBjQrfpInFnXCOFxg85OM/ljWs/',
 	    associate_tag: 'tag'
 	)
-	@response = request.item_search(
-	  query: {
-	    'Keywords' => 'sony',
-	    'SearchIndex' => 'All'
-	  }
-	)
-	asin = @response.to_h['ItemSearchResponse']['Items']['Item'][0]['ASIN']
-	@result = request.item_lookup(
-	  query: {
-	    'ItemId' => asin
-	  }
-	)
-	@item = @result.to_h['ItemLookupResponse']['Items']['Item']
+	
+	#asin = @response.to_h['ItemSearchResponse']['Items']['Item'][0]['ASIN']
+	
 
 	#get reviews
 	require 'net/http'
 	require 'uri'
+	require 'open-uri' 
 
-	#url = URI.parse(@item['ItemLinks']['ItemLink'][2]['URL'])
-	#res = Net::HTTP.get_response(url)
-	#@data = Hash.from_xml(res.to_s).to_json
-
-	require 'open-uri'
-	@doc = Nokogiri::HTML(open(@item['ItemLinks']['ItemLink'][2]['URL']))
-	 
 
 	# foursquare API
 	fs_client = Foursquare2::Client.new(:client_id => 'DFE2PJPNV0TVYZJ4ZPIUBHW4HQODKZPSYC5VOBC4BZWPZ5TK', :client_secret => 'IGACMN05NXCYRXTIMUAX0NOZZEUBKBWJLLMHYANXKBZEUHJH',:oauth_token => 'SNSENWFLDJNXMO54XDUOBIOVS4YRBX1RNAHCWJNQ4IVCDA2T',:api_version => '20140806')
@@ -63,6 +44,9 @@ class ApiController < ApplicationController
   def searchList
   	query = params[:query]
   	type = params[:type]
+
+  	@query_summary = Wikipedia.find( query )
+
   	if type == 'place'
   		require "net/http"
 		require "uri"
@@ -76,10 +60,33 @@ class ApiController < ApplicationController
 		location = JSON.parse(response.body)
 		geo = location["latitude"].to_s + ',' + location["latitude"].to_s
 		@places = fs_client.search_venues(:ll => geo, :query => query)
-		byebug
+		#byebug
   	elsif type == 'product'
+  		@response = request.item_search(
+		  query: {
+		    'Keywords' => query,
+		    'SearchIndex' => 'All'
+		  }
+		)
   	end
   	
+  end
+
+  def searchProfile
+  	type = params[:type]
+  	itemid = params[:itemid]
+
+  	if type == 'place'
+
+  	elsif type == 'product'
+  		@result = request.item_lookup(
+		  query: {
+		    'ItemId' => itemid
+		  }
+		)
+	@item = @result.to_h['ItemLookupResponse']['Items']['Item']
+	#@doc = Nokogiri::HTML(open(@item['ItemLinks']['ItemLink'][2]['URL']))
+  	end
   end
 
   def tweetsAnalysis
@@ -90,6 +97,5 @@ class ApiController < ApplicationController
 		obj = {'id' => tweet.id,'text' => tweet.text,'favorite_count' => tweet.favorite_count,'retweet_count' => tweet.retweet_count,'created_at' => tweet.created_at}
 		byebug
 	end
->>>>>>> c495ffe0ea0d85939bc102ef3ec11942501371cb
   end
 end
