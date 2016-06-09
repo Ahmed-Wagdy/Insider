@@ -16,7 +16,11 @@
 [debug] == resolving dependencies for default#backend-build;0.1-SNAPSHOT [provided]
 [debug] == resolving dependencies default#backend-build;0.1-SNAPSHOT->org.scala-lang#scala-library;2.10.4 [provided->default(compile)]
 [info] Resolving org.scala-lang#scala-library;2.10.4 ...
+<<<<<<< HEAD
+[debug] sbt-chain: Checking cache for: sbt.ivyint.MergedDescriptors@f69022a
+=======
 [debug] sbt-chain: Checking cache for: sbt.ivyint.MergedDescriptors@164f614c
+>>>>>>> 577317faf3bf782041dde118b3362369319eb428
 [debug] sbt-chain: module revision found in cache: org.scala-lang#scala-library;2.10.4
 [debug] 	found org.scala-lang#scala-library;2.10.4 in sbt-chain
 [debug] 	[2.10.4] org.scala-lang#scala-library;2.10.4
@@ -1766,6 +1770,23 @@
 [debug] 	[NOT REQUIRED] org.scala-sbt#apply-macro;0.13.8!apply-macro.jar
 [debug] 	[NOT REQUIRED] org.scala-lang#jline;2.10.4!jline.jar
 [debug] 	[NOT REQUIRED] org.fusesource.jansi#jansi;1.4!jansi.jar
+<<<<<<< HEAD
+[debug] :: resolution report :: resolve 4678ms :: artifacts dl 139ms
+[debug] 	report for default#backend-build;0.1-SNAPSHOT compile produced in /run/media/ahmed/Data/ITI/gp/Insider/backend/project/target/resolution-cache/reports/default-backend-build-compile.xml
+[debug] 	report for default#backend-build;0.1-SNAPSHOT runtime produced in /run/media/ahmed/Data/ITI/gp/Insider/backend/project/target/resolution-cache/reports/default-backend-build-runtime.xml
+[debug] 	report for default#backend-build;0.1-SNAPSHOT test produced in /run/media/ahmed/Data/ITI/gp/Insider/backend/project/target/resolution-cache/reports/default-backend-build-test.xml
+[debug] 	report for default#backend-build;0.1-SNAPSHOT provided produced in /run/media/ahmed/Data/ITI/gp/Insider/backend/project/target/resolution-cache/reports/default-backend-build-provided.xml
+[debug] 	report for default#backend-build;0.1-SNAPSHOT optional produced in /run/media/ahmed/Data/ITI/gp/Insider/backend/project/target/resolution-cache/reports/default-backend-build-optional.xml
+[debug] 	report for default#backend-build;0.1-SNAPSHOT compile-internal produced in /run/media/ahmed/Data/ITI/gp/Insider/backend/project/target/resolution-cache/reports/default-backend-build-compile-internal.xml
+[debug] 	report for default#backend-build;0.1-SNAPSHOT runtime-internal produced in /run/media/ahmed/Data/ITI/gp/Insider/backend/project/target/resolution-cache/reports/default-backend-build-runtime-internal.xml
+[debug] 	report for default#backend-build;0.1-SNAPSHOT test-internal produced in /run/media/ahmed/Data/ITI/gp/Insider/backend/project/target/resolution-cache/reports/default-backend-build-test-internal.xml
+[debug] 	report for default#backend-build;0.1-SNAPSHOT plugin produced in /run/media/ahmed/Data/ITI/gp/Insider/backend/project/target/resolution-cache/reports/default-backend-build-plugin.xml
+[debug] 	report for default#backend-build;0.1-SNAPSHOT sources produced in /run/media/ahmed/Data/ITI/gp/Insider/backend/project/target/resolution-cache/reports/default-backend-build-sources.xml
+[debug] 	report for default#backend-build;0.1-SNAPSHOT docs produced in /run/media/ahmed/Data/ITI/gp/Insider/backend/project/target/resolution-cache/reports/default-backend-build-docs.xml
+[debug] 	report for default#backend-build;0.1-SNAPSHOT pom produced in /run/media/ahmed/Data/ITI/gp/Insider/backend/project/target/resolution-cache/reports/default-backend-build-pom.xml
+[debug] 	report for default#backend-build;0.1-SNAPSHOT scala-tool produced in /run/media/ahmed/Data/ITI/gp/Insider/backend/project/target/resolution-cache/reports/default-backend-build-scala-tool.xml
+[debug] 	resolve done (4678ms resolve - 139ms download)
+=======
 [debug] :: resolution report :: resolve 2170ms :: artifacts dl 145ms
 [debug] 	report for default#backend-build;0.1-SNAPSHOT compile produced in /home/droidman/Insider/backend/project/target/resolution-cache/reports/default-backend-build-compile.xml
 [debug] 	report for default#backend-build;0.1-SNAPSHOT runtime produced in /home/droidman/Insider/backend/project/target/resolution-cache/reports/default-backend-build-runtime.xml
@@ -1781,4 +1802,5 @@
 [debug] 	report for default#backend-build;0.1-SNAPSHOT pom produced in /home/droidman/Insider/backend/project/target/resolution-cache/reports/default-backend-build-pom.xml
 [debug] 	report for default#backend-build;0.1-SNAPSHOT scala-tool produced in /home/droidman/Insider/backend/project/target/resolution-cache/reports/default-backend-build-scala-tool.xml
 [debug] 	resolve done (2170ms resolve - 145ms download)
+>>>>>>> 577317faf3bf782041dde118b3362369319eb428
 [info] Done updating.

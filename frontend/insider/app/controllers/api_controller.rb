@@ -6,12 +6,15 @@ class ApiController < ApplicationController
 
   	# amazon API
 	require 'vacuum'
-	request = Vacuum.new('UK')
-	request.configure(
-	    aws_access_key_id: 'AKIAIOFOSMSJUOFHJX5A',
-	    aws_secret_access_key: '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',
-	    associate_tag: 'tag'
-	)
+	amazon_request = Vacuum.new('UK')
+	#hast it on git hub only for keys
+	# amazon_request.configure(
+	#     aws_access_key_id: 'AKIAIOFOSMSJUOFHJX5A',
+	#     aws_secret_access_key: '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',
+	#     associate_tag: 'tag'
+	# )
+	Rails.cache.write("amazon_request",amazon_request)
+	
 	
 	#asin = @response.to_h['ItemSearchResponse']['Items']['Item'][0]['ASIN']
 	
@@ -44,39 +47,41 @@ class ApiController < ApplicationController
   def searchList
   	query = params[:query]
   	type = params[:type]
-
+  	# require 'wikipedia'
   	@query_summary = Wikipedia.find( query )
 
   	if type == 'place'
   		require "net/http"
 		require "uri"
 		fs_client = Rails.cache.read("fs_client")
-		# byebug
 		# client_ip = request.remote_ip
-		# client_ip = '41.234.19.65'
-		client_ip = '81.21.107.92'
+		client_ip = '41.234.17.232'
 		uri = URI.parse('http://freegeoip.net/json/'+client_ip)
 		response = Net::HTTP.get_response(uri)
 		location = JSON.parse(response.body)
-		geo = location["latitude"].to_s + ',' + location["latitude"].to_s
-		@places = fs_client.search_venues(:ll => geo, :query => query)
-		#byebug
+		geo = location["latitude"].to_s + ',' + location["longitude"].to_s
+		@places = fs_client.search_venues(:ll => geo, :query => query).venues
+		render 'searchListPlace'
   	elsif type == 'product'
-  		@response = request.item_search(
+  		amazon_request = Rails.cache.read("amazon_request")
+  		@response = amazon_request.item_search(
 		  query: {
 		    'Keywords' => query,
 		    'SearchIndex' => 'All'
 		  }
 		)
+		render 'searchListProduct'
   	end
-  	
 	end
+
   def searchProfile
   	type = params[:type]
   	itemid = params[:itemid]
 
   	if type == 'place'
-
+  		fs_client = Rails.cache.read("fs_client")
+  		@item = fs_client.venue(itemid)
+  		byebug
   	elsif type == 'product'
   		@result = request.item_lookup(
 		  query: {
@@ -94,6 +99,8 @@ class ApiController < ApplicationController
 	topics = [query,query.gsub(' ','_'),query.gsub(' ','')]
 	twitter_client.filter(track: topics.join(",")) do |tweet|
 		obj = {'id' => tweet.id,'text' => tweet.text,'favorite_count' => tweet.favorite_count,'retweet_count' => tweet.retweet_count,'created_at' => tweet.created_at}
+		# sending the twitter obj to a kafka topic, a kafka server should be running
+		producer.produce(obj, topic: query.gsub(' ',''))
 		byebug
 	end
   end

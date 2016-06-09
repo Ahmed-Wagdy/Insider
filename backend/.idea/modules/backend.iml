@@ -175,6 +175,10 @@
         </SOURCES>
       </library>
     </orderEntry>
+
+    <orderEntry type="library" name="SBT: com.typesafe.akka:akka-remote_2.10:2.3.11:jar" level="project" />
+    <orderEntry type="library" name="SBT: org.slf4j:slf4j-api:1.7.2:jar" level="project" />
+
     <orderEntry type="module-library">
       <library>
         <CLASSES>
@@ -193,5 +197,6 @@
         <SOURCES />
       </library>
     </orderEntry>
+
   </component>
 </module>
