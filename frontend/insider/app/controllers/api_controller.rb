@@ -61,7 +61,7 @@ class ApiController < ApplicationController
 		location = JSON.parse(response.body)
 		geo = location["latitude"].to_s + ',' + location["longitude"].to_s
 		@places = fs_client.search_venues(:ll => geo, :query => query).venues
-		# render 'searchListPlace'
+		render 'searchListPlace'
   	elsif type == 'product'
   		amazon_request = Rails.cache.read("amazon_request")
   		@response = amazon_request.item_search(
@@ -70,9 +70,8 @@ class ApiController < ApplicationController
 		    'SearchIndex' => 'All'
 		  }
 		)
-		# render 'searchListProduct'
+		render 'searchListProduct'
   	end
-  	byebug
 	end
 
   def searchProfile
@@ -82,7 +81,6 @@ class ApiController < ApplicationController
   	if type == 'place'
   		fs_client = Rails.cache.read("fs_client")
   		@item = fs_client.venue(itemid)
-  		byebug
   	elsif type == 'product'
   		amazon_request = Rails.cache.read("amazon_request")
   		@result = amazon_request.item_lookup(
@@ -93,7 +91,6 @@ class ApiController < ApplicationController
 	@item = @result.to_h['ItemLookupResponse']['Items']['Item']
 	#@doc = Nokogiri::HTML(open(@item['ItemLinks']['ItemLink'][2]['URL']))
   	end
-  	byebug
   end
 
   def tweetsAnalysis
