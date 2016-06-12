@@ -81,6 +81,7 @@ class ApiController < ApplicationController
   	if type == 'place'
   		fs_client = Rails.cache.read("fs_client")
   		@item = fs_client.venue(itemid)
+  		render 'searchProfilePlace'
   	elsif type == 'product'
   		amazon_request = Rails.cache.read("amazon_request")
   		@result = amazon_request.item_lookup(
@@ -88,8 +89,9 @@ class ApiController < ApplicationController
 		    'ItemId' => itemid
 		  }
 		)
-	@item = @result.to_h['ItemLookupResponse']['Items']['Item']
-	#@doc = Nokogiri::HTML(open(@item['ItemLinks']['ItemLink'][2]['URL']))
+		@item = @result.to_h['ItemLookupResponse']['Items']['Item']
+		render 'searchProfileProduct'
+		# @doc = Nokogiri::HTML(open(@item['ItemLinks']['ItemLink'][2]['URL']))
   	end
   end
 
