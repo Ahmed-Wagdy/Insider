@@ -6,7 +6,11 @@ scalaVersion := "2.10.4"
 
 resolvers += "spray repo" at "http://repo.spray.io"
 
-
+libraryDependencies ++= Seq(
+  "org.apache.spark" % "spark-core_2.10" % "1.6.1",
+  "org.apache.spark" % "spark-sql_2.10" % "1.6.1",
+  "com.datastax.spark" %% "spark-cassandra-connector" % "1.6.0-M2"
+)
 
 libraryDependencies += "org.twitter4j" % "twitter4j-stream" % "4.0.4"
 
