@@ -4,7 +4,6 @@ Rails.application.routes.draw do
   get 'api/searchList'
   get 'api/searchProfile'
   get 'api/tweetsAnalysis'
-
   # root 'posts#index'
 
   # The priority is based upon order of creation: first created -> highest priority.

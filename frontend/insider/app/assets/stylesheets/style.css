@@ -21,7 +21,6 @@ body a{
 	-ms-transition:0.5s all;
 }
 .banner {
-	background: url(../images/3.jpg) no-repeat center top;
 	background-size: cover;
 	-webkit-background-size: cover;
 	-moz-background-size: cover;
@@ -1671,7 +1670,7 @@ ul.tab_list li {
 	margin-bottom: 10px;
 }
 ul.tab_list li a {
-	color:#999;
+	color:white;
 	font-size:0.95em;
 	line-height: 1.8em;
 	vertical-align: top;
@@ -2719,7 +2718,7 @@ ul.tab_list {
   padding: 10px;
 }
 ul.tab_list li a {
-  color: #999;
+  color: white;
   font-size: 0.85em;
   line-height: 1.8em;
 }  

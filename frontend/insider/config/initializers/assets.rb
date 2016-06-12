@@ -11,6 +11,13 @@ Rails.application.config.assets.version = '1.0'
 # Rails.application.config.assets.precompile += %w( search.js )
 Rails.application.config.assets.precompile += %w( bootstrap.min.css )
 Rails.application.config.assets.precompile += %w( freelancer.css )
+Rails.application.config.assets.precompile += %w( style.css )
+Rails.application.config.assets.precompile += %w( component.css )
+Rails.application.config.assets.precompile += %w( flexslider.css )
+Rails.application.config.assets.precompile += %w( jquery.flexslider.js )
+Rails.application.config.assets.precompile += %w( jquery.easydropdown.js )
+Rails.application.config.assets.precompile += %w( easyResponsiveTabs.js )
+
 Rails.application.config.assets.precompile += %w( cbpAnimatedHeader.js )
 Rails.application.config.assets.precompile += %w( classie.js )
 Rails.application.config.assets.precompile += %w( contact_me.js )

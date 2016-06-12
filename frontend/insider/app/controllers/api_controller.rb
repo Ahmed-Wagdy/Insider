@@ -8,21 +8,21 @@ class ApiController < ApplicationController
 	require 'vacuum'
 	amazon_request = Vacuum.new('UK')
 	#hast it on git hub only for keys
-	amazon_request.configure(
-	    aws_access_key_id: 'AKIAIOFOSMSJUOFHJX5A',
-	    aws_secret_access_key: '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',
-	    associate_tag: 'tag'
-	)
+	# amazon_request.configure(
+	#     aws_access_key_id: 'AKIAIOFOSMSJUOFHJX5A',
+	#     aws_secret_access_key: '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',
+	#     associate_tag: 'tag'
+	# )
 	Rails.cache.write("amazon_request",amazon_request)
-	
-	
+
+
 	#asin = @response.to_h['ItemSearchResponse']['Items']['Item'][0]['ASIN']
-	
+
 
 	#get reviews
 	require 'net/http'
 	require 'uri'
-	require 'open-uri' 
+	require 'open-uri'
 
 
 	# foursquare API
@@ -61,7 +61,7 @@ class ApiController < ApplicationController
 		location = JSON.parse(response.body)
 		geo = location["latitude"].to_s + ',' + location["longitude"].to_s
 		@places = fs_client.search_venues(:ll => geo, :query => query).venues
-		# render 'searchListPlace'
+		render 'searchListPlace'
   	elsif type == 'product'
   		amazon_request = Rails.cache.read("amazon_request")
   		@response = amazon_request.item_search(
@@ -70,30 +70,28 @@ class ApiController < ApplicationController
 		    'SearchIndex' => 'All'
 		  }
 		)
-		# render 'searchListProduct'
+		render 'searchListProduct'
   	end
-  	byebug
 	end
 
   def searchProfile
-  	type = params[:type]
-  	itemid = params[:itemid]
-
-  	if type == 'place'
-  		fs_client = Rails.cache.read("fs_client")
-  		@item = fs_client.venue(itemid)
-  		byebug
-  	elsif type == 'product'
-  		amazon_request = Rails.cache.read("amazon_request")
-  		@result = amazon_request.item_lookup(
-		  query: {
-		    'ItemId' => itemid
-		  }
-		)
-	@item = @result.to_h['ItemLookupResponse']['Items']['Item']
-	#@doc = Nokogiri::HTML(open(@item['ItemLinks']['ItemLink'][2]['URL']))
-  	end
-  	byebug
+		render 'searchProfileProduct'
+  	# type = params[:type]
+  	# itemid = params[:itemid]
+  #
+  	# if type == 'place'
+  	# 	fs_client = Rails.cache.read("fs_client")
+  	# 	@item = fs_client.venue(itemid)
+  	#
+  	# elsif type == 'product'
+  	# 	@result = request.item_lookup(
+	# 	  query: {
+	# 	    'ItemId' => itemid
+	# 	  }
+	# 	)
+	# @item = @result.to_h['ItemLookupResponse']['Items']['Item']
+	# #@doc = Nokogiri::HTML(open(@item['ItemLinks']['ItemLink'][2]['URL']))
+  	# end
   end
 
   def tweetsAnalysis
@@ -101,12 +99,10 @@ class ApiController < ApplicationController
   	twitter_client = Rails.cache.read("twitter_client")
 	topics = [query,query.gsub(' ','_'),query.gsub(' ','')]
 	twitter_client.filter(track: topics.join(",")) do |tweet|
-		if tweet.lang == 'en'
-			obj = {'id' => tweet.id,'text' => tweet.text,'favorite_count' => tweet.favorite_count,'retweet_count' => tweet.retweet_count,'created_at' => tweet.created_at}
-			# sending the twitter obj to a kafka topic, a kafka server should be running
-			producer.produce(obj, topic: query.gsub(' ',''))
-		end
+		obj = {'id' => tweet.id,'text' => tweet.text,'favorite_count' => tweet.favorite_count,'retweet_count' => tweet.retweet_count,'created_at' => tweet.created_at}
+		# sending the twitter obj to a kafka topic, a kafka server should be running
+		producer.produce(obj, topic: query.gsub(' ',''))
+		byebug
 	end
-	render :json => {status: true}
   end
 end
