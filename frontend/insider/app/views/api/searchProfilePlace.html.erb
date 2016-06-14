@@ -1,3 +1,52 @@
 <script type="text/javascript">
 	analyzeTweets("<%= @item.name %>");
 </script>
+<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=false"></script>
+<script language="javascript" type="text/javascript">
+
+    var map;
+    var geocoder;
+    function InitializeMap() {
+
+        var latlng = new google.maps.LatLng("<%= @item.location.lat %>", "<%= @item.location.lng %>");
+        var myOptions =
+        {
+            zoom: 15,
+            center: latlng,
+            mapTypeId: google.maps.MapTypeId.ROADMAP,
+            disableDefaultUI: true
+        };
+        map = new google.maps.Map(document.getElementById("map"), myOptions);
+    }
+
+    function FindLocaiton() {
+        geocoder = new google.maps.Geocoder();
+        InitializeMap();
+
+        var address = document.getElementById("addressinput").value;
+        geocoder.geocode({ 'address': address }, function (results, status) {
+            if (status == google.maps.GeocoderStatus.OK) {
+                map.setCenter(results[0].geometry.location);
+                var marker = new google.maps.Marker({
+                    map: map,
+                    position: results[0].geometry.location
+                });
+
+            }
+            else {
+                alert("Geocode was not successful for the following reason: " + status);
+            }
+        });
+
+    }
+
+
+    function Button1_onclick() {
+        FindLocaiton();
+    }
+
+    window.onload = InitializeMap;
+
+</script>
+<div id ="map" style="height: 253px" >
+</div>

@@ -75,26 +75,26 @@ class ApiController < ApplicationController
   end
 
   def searchProfile
-    render 'searchProfileProduct'
-      #
-      # type = params[:type]
-      # itemid = params[:itemid]
-      #
-      # if type == 'place'
-      # 	fs_client = Rails.cache.read("fs_client")
-      # 	@item = fs_client.venue(itemid)
-      # 	render 'searchProfilePlace'
-      # elsif type == 'product'
-      # 	amazon_request = Rails.cache.read("amazon_request")
-      # 	@result = amazon_request.item_lookup(
-      #  query: {
-      #    'ItemId' => itemid
-      #  }
-      # )
-      # @item = @result.to_h['ItemLookupResponse']['Items']['Item']
-      # render 'searchProfileProduct'
-      # # @doc = Nokogiri::HTML(open(@item['ItemLinks']['ItemLink'][2]['URL']))
-      # end
+    # render 'searchProfileProduct'
+      
+      type = params[:type]
+      itemid = params[:itemid]
+      
+      if type == 'place'
+      	fs_client = Rails.cache.read("fs_client")
+      	@item = fs_client.venue(itemid)
+      	render 'searchProfilePlace'
+      elsif type == 'product'
+      	amazon_request = Rails.cache.read("amazon_request")
+      	@result = amazon_request.item_lookup(
+       query: {
+         'ItemId' => itemid
+       }
+      )
+      @item = @result.to_h['ItemLookupResponse']['Items']['Item']
+      render 'searchProfileProduct'
+      # @doc = Nokogiri::HTML(open(@item['ItemLinks']['ItemLink'][2]['URL']))
+      end
   end
 
   def tweetsAnalysis
