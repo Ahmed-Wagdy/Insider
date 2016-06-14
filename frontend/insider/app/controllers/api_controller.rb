@@ -104,7 +104,7 @@ class ApiController < ApplicationController
     twitter_client.filter(track: topics.join(",")) do |tweet|
       obj = {'id' => tweet.id, 'text' => tweet.text, 'favorite_count' => tweet.favorite_count, 'retweet_count' => tweet.retweet_count, 'created_at' => tweet.created_at}
       # sending the twitter obj to a kafka topic, a kafka server should be running
-      producer.produce(obj, topic: query.gsub(' ', ''))
+      # producer.produce(obj, topic: query.gsub(' ', ''))
       byebug
     end
   end

@@ -159,7 +159,19 @@
             </div>
             <div class="col-xs-12 col-sm-12 col-md-7 excerpet">
               <h3><a href="/api/searchProfile?type=place&itemid=<%= place.id %>" title=""><%= place.name %></a></h3>
-              <p> <%= place.location %></p>
+              <% if !place.location.formattedAddress.nil? %>
+              <p> <%= place.location.formattedAddress.map { |k| "#{k}" }.join(",") %></p>
+              <% end %>
+              <% if !place.categories[0].nil? %>
+              <% if !place.categories[0].name.nil? %>
+              <p> <%= place.categories[0].name %></p>
+              <% end %>
+              <% end %>
+              <label>checkins count<span class="label label-default"><%= place.stats.checkinsCount %></span></label>
+              <label>User count<span class="label label-default"><%= place.stats.usersCount %></span></label>
+              <br>
+              <a href="http://www.facebook.com/<%= place.contact.facebook %>"><i class="fa fa-facebook-official" aria-hidden="true"></i></a>
+              <a href="http://www.twitter.com/<%= place.contact.twitter %>"><i class="fa fa-twitter-square" aria-hidden="true"></i></a>
               <span class="plus"><a href="#" title="Lorem ipsum"><i class="glyphicon glyphicon-plus"></i></a></span>
             </div>
             <span class="clearfix borda"></span>
