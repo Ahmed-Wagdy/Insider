@@ -46,6 +46,7 @@ class ApiController < ApplicationController
 
   def searchList
     query = params[:query]
+    @myQuery=params[:query]
     type = params[:type]
     # require 'wikipedia'
     @query_summary = Wikipedia.find(query)
