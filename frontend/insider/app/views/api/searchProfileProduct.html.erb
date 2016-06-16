@@ -3,7 +3,7 @@
 <head>
   <script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
 
-
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
   <%= stylesheet_link_tag 'style', media: 'all', 'data-turbolinks-track' => true %>
 
   <!-- start menu -->
@@ -21,6 +21,8 @@
   </script>
 </head>
 <body>
+<%=@item['ItemLinks']['ItemLink'][2]['URL']%>
+
 
 <div class="men">
   <div class="container">
@@ -29,58 +31,44 @@
         <div class="labout span_1_of_a1">
           <div class="flexslider">
             <ul class="slides">
-              <%= image_tag("s1.jpg")%>
+              <%= image_tag(@alldoc.css(".a-link-normal img").attr("src"))%>
             </ul>
           </div>
           <div class="clearfix"></div>
         </div>
         <div class="cont1 span_2_of_a1 simpleCart_shelfItem">
-          <h1>Duis autem</h1>
+          <h1><%=@item['ItemAttributes']['Title']%></h1>
           <p class="availability" style="color: white">Availability: <span class="color">In stock</span></p>
           <div class="price_single">
-            <span class="reducedfrom">$140.00</span>
-            <span class="amount item_price actual">$120.00</span><a href="#">click for offer</a>
+            <span class="amount item_price actual"><%= @alldoc.css(".arp-price").inner_html %></span>
           </div>
           <h2 class="quick">Quick Overview:</h2>
-          <p class="quick_desc" style="color: white"> Nam liber tempor cum soluta nobis eleifend option congue nihil imperdiet doming id quod mazim placerat facer possim assum. Typi non habent claritatem insitam; es</p>
-
+          <p class="quick_desc" style="color: white">Product Rate : <%= @alldoc.css(".averageStarRatingNumerical span").inner_html%></p>
+          <p class="quick_desc" style="color: white">total Reviews : <%= @alldoc.css(".totalReviewCount").inner_html%></p>
+          <%= @alldoc.css(".a-spacing-top-mini.a-row :nth-child(1) span").inner_html %>
         </div>
         <div class="clearfix"> </div>
       </div>
       <div class="sap_tabs">
         <div id="horizontalTab" style="display: block; width: 100%; margin: 0px;">
           <ul class="resp-tabs-list">
-            <li class="resp-tab-item" aria-controls="tab_item-0" role="tab"><span>Product Description</span></li>
-            <li class="resp-tab-item" aria-controls="tab_item-1" role="tab"><span>Additional Information</span></li>
-            <li class="resp-tab-item" aria-controls="tab_item-2" role="tab"><span>Reviews</span></li>
+            <li class="resp-tab-item" aria-controls="tab_item-0" role="tab"><span>Positive REview</span></li>
+            <li class="resp-tab-item" aria-controls="tab_item-1" role="tab"><span>critical Review</span></li>
           </ul>
           <div class="resp-tabs-container" style="color: white">
             <div class="tab-1 resp-tab-content" aria-labelledby="tab_item-0">
               <div class="facts">
                 <ul class="tab_list" style="color: white">
-                  <li><a href="#">Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat</a></li>
-                  <li><a href="#">augue duis dolore te feugait nulla facilisi. Nam liber tempor cum soluta nobis eleifend option congue nihil imperdiet doming id quod mazim placerat facer possim assum. Typi non habent claritatem insitam; est usus legentis in iis qui facit eorum claritatem. Investigatione</a></li>
-                  <li><a href="#">claritatem insitam; est usus legentis in iis qui facit eorum claritatem. Investigationes demonstraverunt lectores legere me lius quod ii legunt saepius. Claritas est etiam processus dynamicus, qui sequitur mutationem consuetudium lectorum. Mirum est notare quam littera gothica</a></li>
-                  <li><a href="#">Mirum est notare quam littera gothica, quam nunc putamus parum claram, anteposuerit litterarum formas humanitatis per seacula quarta decima et quinta decima. Eodem modo typi, qui nunc nobis videntur parum clari, fiant sollemnes in futurum.</a></li>
+                  <li><a href="#"><%= @alldoc.css(".a-expander-content").children[5].children[0].text() %></a></li>
+                 
                 </ul>
               </div>
             </div>
             <div class="tab-1 resp-tab-content" aria-labelledby="tab_item-1" style="color: white">
               <div class="facts">
                 <ul class="tab_list" style="color: white">
-                  <li><a href="#">augue duis dolore te feugait nulla facilisi. Nam liber tempor cum soluta nobis eleifend option congue nihil imperdiet doming id quod mazim placerat facer possim assum. Typi non habent claritatem insitam; est usus legentis in iis qui facit eorum claritatem. Investigatione</a></li>
-                  <li><a href="#">claritatem insitam; est usus legentis in iis qui facit eorum claritatem. Investigationes demonstraverunt lectores legere me lius quod ii legunt saepius. Claritas est etiam processus dynamicus, qui sequitur mutationem consuetudium lectorum. Mirum est notare quam littera gothica</a></li>
-                  <li><a href="#">Mirum est notare quam littera gothica, quam nunc putamus parum claram, anteposuerit litterarum formas humanitatis per seacula quarta decima et quinta decima. Eodem modo typi, qui nunc nobis videntur parum clari, fiant sollemnes in futurum.</a></li>
-                </ul>
-              </div>
-            </div>
-            <div class="tab-1 resp-tab-content" aria-labelledby="tab_item-2" style="color: white">
-              <div class="facts">
-                <ul class="tab_list" style="color: white;">
-                  <li><a href="#">Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat</a></li>
-                  <li><a href="#">augue duis dolore te feugait nulla facilisi. Nam liber tempor cum soluta nobis eleifend option congue nihil imperdiet doming id quod mazim placerat facer possim assum. Typi non habent claritatem insitam; est usus legentis in iis qui facit eorum claritatem. Investigatione</a></li>
-                  <li><a href="#">claritatem insitam; est usus legentis in iis qui facit eorum claritatem. Investigationes demonstraverunt lectores leg</a></li>
-                  <li><a href="#">Mirum est notare quam littera gothica, quam nunc putamus parum claram, anteposuerit litterarum formas humanitatis per seacula quarta decima et quinta decima. Eodem modo typi, qui nunc nobis videntur parum clari, fiant sollemnes in futurum.</a></li>
+                  <li><a href="#"><%= @alldoc.css("#viewpoint-R6ABAI0SF9AHH").children[0].children[5].children[0].text() %></a></li>
+                 
                 </ul>
               </div>
             </div>
@@ -96,4 +84,5 @@
 <%= stylesheet_link_tag 'flexslider', media: 'all', 'data-turbolinks-track' => true %>
 
 </body>
+
 </html>

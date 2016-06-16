@@ -8,11 +8,11 @@ class ApiController < ApplicationController
     require 'vacuum'
     amazon_request = Vacuum.new('UK')
     #hast it on git hub only for keys
-    # amazon_request.configure(
-    #     aws_access_key_id: 'AKIAIOFOSMSJUOFHJX5A',
-    #     aws_secret_access_key: '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',
-    #     associate_tag: 'tag'
-    # )
+     amazon_request.configure(
+         aws_access_key_id: 'AKIAIOFOSMSJUOFHJX5A',
+         aws_secret_access_key: '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',
+         associate_tag: 'tag'
+     )
     Rails.cache.write("amazon_request", amazon_request)
 
 
@@ -64,12 +64,13 @@ class ApiController < ApplicationController
       render 'searchListPlace'
     elsif type == 'product'
       amazon_request = Rails.cache.read("amazon_request")
-      @response = amazon_request.item_search(
+      response = amazon_request.item_search(
           query: {
               'Keywords' => query,
               'SearchIndex' => 'All'
           }
       )
+      @products = response.to_h['ItemSearchResponse']['Items']['Item']
       render 'searchListProduct'
     end
   end
@@ -92,8 +93,12 @@ class ApiController < ApplicationController
        }
       )
       @item = @result.to_h['ItemLookupResponse']['Items']['Item']
+      #crawler = Cobweb.new(:follow_redirects => false)
+     #crawler.start(@item['ItemLinks']['ItemLink'][2]['URL'])
+     @alldoc = Nokogiri::HTML(open(@item['ItemLinks']['ItemLink'][2]['URL']))
+     @doc = @alldoc.css(".a-link-normal img").attr("src")
       render 'searchProfileProduct'
-      # @doc = Nokogiri::HTML(open(@item['ItemLinks']['ItemLink'][2]['URL']))
+      #@doc = Nokogiri::HTML(open(@item['ItemLinks']['ItemLink'][2]['URL']))
       end
   end
 

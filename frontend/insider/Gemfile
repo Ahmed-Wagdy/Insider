@@ -30,6 +30,9 @@ gem 'wikipedia-client'
 gem 'rebay'
 #amazon
 gem 'vacuum'
+#web crawl
+gem 'cobweb'
+
 
 gem 'sqlite3'
 # Use ActiveModel has_secure_password
