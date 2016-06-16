@@ -46,6 +46,8 @@ class ApiController < ApplicationController
 
   def searchList
     query = params[:query]
+    @query = query
+    @myQuery=params[:query]
     type = params[:type]
     # require 'wikipedia'
     @query_summary = Wikipedia.find(query)
@@ -61,6 +63,7 @@ class ApiController < ApplicationController
       location = JSON.parse(response.body)
       geo = location["latitude"].to_s + ',' + location["longitude"].to_s
       @places = fs_client.search_venues(:ll => geo, :query => query).venues
+
       render 'searchListPlace'
     elsif type == 'product'
       amazon_request = Rails.cache.read("amazon_request")
@@ -84,6 +87,7 @@ class ApiController < ApplicationController
       if type == 'place'
       	fs_client = Rails.cache.read("fs_client")
       	@item = fs_client.venue(itemid)
+        byebug
       	render 'searchProfilePlace'
       elsif type == 'product'
       	amazon_request = Rails.cache.read("amazon_request")
@@ -110,7 +114,7 @@ class ApiController < ApplicationController
       obj = {'id' => tweet.id, 'text' => tweet.text, 'favorite_count' => tweet.favorite_count, 'retweet_count' => tweet.retweet_count, 'created_at' => tweet.created_at}
       # sending the twitter obj to a kafka topic, a kafka server should be running
       # producer.produce(obj, topic: query.gsub(' ', ''))
-      byebug
+      byebug  
     end
   end
 end
