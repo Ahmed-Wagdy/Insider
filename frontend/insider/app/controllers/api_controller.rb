@@ -7,12 +7,13 @@ class ApiController < ApplicationController
     # amazon API
     require 'vacuum'
     amazon_request = Vacuum.new('UK')
-    # hast it on git hub only for keys
-    amazon_request.configure(
-        aws_access_key_id: 'AKIAIOFOSMSJUOFHJX5A',
-        aws_secret_access_key: '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',
-        associate_tag: 'tag'
-    )
+    #hast it on git hub only for keys
+
+    # amazon_request.configure(
+    #     aws_access_key_id: 'AKIAIOFOSMSJUOFHJX5A',
+    #     aws_secret_access_key: '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',
+    #     associate_tag: 'tag'
+    # )
     Rails.cache.write("amazon_request", amazon_request)
 
 
@@ -50,7 +51,7 @@ class ApiController < ApplicationController
     @myQuery=params[:query]
     type = params[:type]
     # require 'wikipedia'
-    @query_summary = Wikipedia.find(query)
+    #@query_summary = Wikipedia.find(query)
 
     if type == 'place'
       require "net/http"
@@ -89,6 +90,7 @@ class ApiController < ApplicationController
         @item = fs_client.venue(itemid)
         byebug
         render 'searchProfilePlace'
+
       elsif type == 'product'
         amazon_request = Rails.cache.read("amazon_request")
         @result = amazon_request.item_lookup(
@@ -119,10 +121,15 @@ class ApiController < ApplicationController
       obj = {'id' => tweet.id, 'text' => tweet.text, 'favoriteCount' => tweet.favorite_count, 'retweetCount' => tweet.retweet_count, 'createdAt' => tweet.created_at}
 
       # sending the twitter obj to a kafka topic, a kafka server should be running
+
       $kafka_producer.produce(tweet.text, topic: query.gsub(' ', ''))
 
       
       
+
+      # producer.produce(obj, topic: query.gsub(' ', ''))
+      byebug  
+
     end
   end
 end
