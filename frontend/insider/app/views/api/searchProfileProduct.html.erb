@@ -21,8 +21,6 @@
   </script>
 </head>
 <body>
-<%=@item['ItemLinks']['ItemLink'][2]['URL']%>
-
 
 <div class="men">
   <div class="container">
@@ -38,7 +36,7 @@
         </div>
         <div class="cont1 span_2_of_a1 simpleCart_shelfItem">
           <h1><%=@item['ItemAttributes']['Title']%></h1>
-          <p class="availability" style="color: white">Availability: <span class="color">In stock</span></p>
+         
           <div class="price_single">
             <span class="amount item_price actual"><%= @alldoc.css(".arp-price").inner_html %></span>
           </div>
@@ -49,6 +47,64 @@
         </div>
         <div class="clearfix"> </div>
       </div>
+     
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.1.5/Chart.js"></script>
+      <canvas id="myChart" width="400" height="400" style="background-color: white"></canvas>
+
+      <%
+      ratecat=[]
+      rateval=[]
+      ratecat.push("5 stars")
+      ratecat.push("4 stars")
+      ratecat.push("3 stars")
+      ratecat.push("2 stars")
+      ratecat.push("1 star")
+    
+      rateval.push(@alldoc.css("#histogramTable").children[0].children[2].children[0].inner_html.to_i)
+      rateval.push(@alldoc.css("#histogramTable").children[1].children[2].children[0].inner_html.to_i)
+      rateval.push(@alldoc.css("#histogramTable").children[2].children[2].children[0].inner_html.to_i)
+      rateval.push(@alldoc.css("#histogramTable").children[3].children[2].children[0].inner_html.to_i)
+      rateval.push(@alldoc.css("#histogramTable").children[4].children[2].children[0].inner_html.to_i)
+      %>
+      <script>
+        var ctx = document.getElementById("myChart");
+        var myChart = new Chart(ctx, {
+          type: 'doughnut',
+          data: {
+            labels: <%= raw ratecat%>,
+            datasets: [{
+              label: '# of rate',
+              data: <%= rateval %>,
+              backgroundColor: [
+                'rgba(255, 99, 132, 0.2)',
+                'rgba(54, 162, 235, 0.2)',
+                'rgba(255, 206, 86, 0.2)',
+                'rgba(75, 192, 192, 0.2)',
+                'rgba(153, 102, 255, 0.2)',
+                'rgba(255, 159, 64, 0.2)'
+              ],
+              borderColor: [
+                'rgba(255,99,132,1)',
+                'rgba(54, 162, 235, 1)',
+                'rgba(255, 206, 86, 1)',
+                'rgba(75, 192, 192, 1)',
+                'rgba(153, 102, 255, 1)',
+                'rgba(255, 159, 64, 1)'
+              ],
+              borderWidth: 1
+            }]
+          },
+          options: {
+            scales: {
+              yAxes: [{
+                ticks: {
+                  beginAtZero:true
+                }
+              }]
+            }
+          }
+        });
+      </script>
       <div class="sap_tabs">
         <div id="horizontalTab" style="display: block; width: 100%; margin: 0px;">
           <ul class="resp-tabs-list">

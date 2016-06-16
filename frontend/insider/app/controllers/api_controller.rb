@@ -100,7 +100,7 @@ class ApiController < ApplicationController
       #crawler = Cobweb.new(:follow_redirects => false)
      #crawler.start(@item['ItemLinks']['ItemLink'][2]['URL'])
      @alldoc = Nokogiri::HTML(open(@item['ItemLinks']['ItemLink'][2]['URL']))
-     @doc = @alldoc.css(".a-link-normal img").attr("src")
+  
       render 'searchProfileProduct'
       #@doc = Nokogiri::HTML(open(@item['ItemLinks']['ItemLink'][2]['URL']))
       end
