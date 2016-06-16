@@ -31,6 +31,7 @@ gem 'rebay'
 #amazon
 gem 'vacuum'
 
+
 gem 'sqlite3'
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'

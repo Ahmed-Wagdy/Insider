@@ -2,7 +2,7 @@ import akka.actor._
 import akka.util.Timeout
 import org.apache.spark.{SparkContext, SparkConf}
 import utilities.TwitterHelper.StartCollecting
-import utilities.{SupervisorActor, InsiderSettings}
+import utilities.{DBAccess, SupervisorActor, InsiderSettings}
 import scala.concurrent.Future
 import scala.concurrent.duration._
 import scala.util.{Failure, Success}
@@ -24,6 +24,7 @@ object InsiderApp extends App{
   val sc = new SparkContext(conf)
 
   val system = ActorSystem(appName)
+
 
   val superVisor = system.actorOf(Props(new SupervisorActor(sc, settings)), "supervisor-actor")
 

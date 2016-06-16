@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="slf4j-simple">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/../../stanford-corenlp-full-2015-12-09/slf4j-simple.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

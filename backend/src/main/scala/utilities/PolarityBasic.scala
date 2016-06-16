@@ -1,15 +1,30 @@
+package utilities
+
 import java.io.{IOException, File}
+import java.util
+import java.util.Properties
 
-import com.aliasi.classify.{Classification, DynamicLMClassifier}
+import com.aliasi.classify.DynamicLMClassifier
 import com.aliasi.util.Files
+import edu.stanford.nlp.ling.CoreAnnotations.SentencesAnnotation
+import edu.stanford.nlp.pipeline.{Annotation, StanfordCoreNLP}
+import edu.stanford.nlp.sentiment.SentimentCoreAnnotations.SentimentClass
+import edu.stanford.nlp.util.CoreMap
+import scala.collection.JavaConversions._
 
-object PolarityBasic extends App{
+object PolarityBasic {
+  val props = new Properties()
+
+  props.setProperty("annotators", "tokenize, ssplit, pos, lemma, parse, sentiment");
+  val pipeline: StanfordCoreNLP = new StanfordCoreNLP(props);
+
+
   var mPolarityDir: File  = null
   var mCategories: Array[String] = null
   var mClassifier: DynamicLMClassifier = null
 
     println("\nBASIC POLARITY DEMO")
-    this.mPolarityDir = new File("/home/droidman/Insider/training", "txt_sentoken")
+    this.mPolarityDir = new File("/home/ahmed/training", "txt_sentoken")
     println("\nData Directory=" + this.mPolarityDir)
     this.mCategories = this.mPolarityDir.list
     val nGram: Int = 8
@@ -47,7 +62,7 @@ object PolarityBasic extends App{
                 }
                 else {
                   numTrainingCases += 1
-                  println(numTrainingCases)
+
                   val review: String = Files.readFromFile(trainFile.asInstanceOf[File])
                   numTrainingChars += review.length
                   this.mClassifier.train(category, review.asInstanceOf[CharSequence])
@@ -63,8 +78,17 @@ object PolarityBasic extends App{
 
   @throws(classOf[IOException])
   def evaluate(tweet: String): String = {
-    val classification1: Classification = mClassifier.classify(tweet.asInstanceOf[AnyRef])
-    println(classification1.bestCategory)
-    return classification1.bestCategory
+    var sen:String = "good"
+    val annotation: Annotation = pipeline.process(tweet);
+    val sentences: util.List[CoreMap] = annotation.get(classOf[SentencesAnnotation])
+
+    for (sentence :CoreMap <- sentences) {
+      val sentiment: String = sentence.get(classOf[SentimentClass])
+
+      if (sentiment == "Neutral") sen = sentiment
+      else sen = mClassifier.classify(tweet.asInstanceOf[AnyRef]).bestCategory
+    }
+    sen
   }
+
 }

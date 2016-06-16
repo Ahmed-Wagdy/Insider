@@ -7,12 +7,12 @@ class ApiController < ApplicationController
     # amazon API
     require 'vacuum'
     amazon_request = Vacuum.new('UK')
-    #hast it on git hub only for keys
-    # amazon_request.configure(
-    #     aws_access_key_id: 'AKIAIOFOSMSJUOFHJX5A',
-    #     aws_secret_access_key: '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',
-    #     associate_tag: 'tag'
-    # )
+    # hast it on git hub only for keys
+    amazon_request.configure(
+        aws_access_key_id: 'AKIAIOFOSMSJUOFHJX5A',
+        aws_secret_access_key: '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',
+        associate_tag: 'tag'
+    )
     Rails.cache.write("amazon_request", amazon_request)
 
 
@@ -46,6 +46,8 @@ class ApiController < ApplicationController
 
   def searchList
     query = params[:query]
+    @query = query
+    @myQuery=params[:query]
     type = params[:type]
     # require 'wikipedia'
     @query_summary = Wikipedia.find(query)
@@ -65,12 +67,13 @@ class ApiController < ApplicationController
       render 'searchListPlace'
     elsif type == 'product'
       amazon_request = Rails.cache.read("amazon_request")
-      @response = amazon_request.item_search(
+      response = amazon_request.item_search(
           query: {
               'Keywords' => query,
               'SearchIndex' => 'All'
           }
       )
+      @products = response.to_h['ItemSearchResponse']['Items']['Item']
       render 'searchListProduct'
     end
   end
@@ -82,31 +85,44 @@ class ApiController < ApplicationController
       itemid = params[:itemid]
       
       if type == 'place'
-      	fs_client = Rails.cache.read("fs_client")
-      	@item = fs_client.venue(itemid)
-      	render 'searchProfilePlace'
+        fs_client = Rails.cache.read("fs_client")
+        @item = fs_client.venue(itemid)
+        byebug
+        render 'searchProfilePlace'
       elsif type == 'product'
-      	amazon_request = Rails.cache.read("amazon_request")
-      	@result = amazon_request.item_lookup(
+        amazon_request = Rails.cache.read("amazon_request")
+        @result = amazon_request.item_lookup(
        query: {
          'ItemId' => itemid
        }
       )
       @item = @result.to_h['ItemLookupResponse']['Items']['Item']
+      #crawler = Cobweb.new(:follow_redirects => false)
+     #crawler.start(@item['ItemLinks']['ItemLink'][2]['URL'])
+     @alldoc = Nokogiri::HTML(open(@item['ItemLinks']['ItemLink'][2]['URL']))
+  
       render 'searchProfileProduct'
-      # @doc = Nokogiri::HTML(open(@item['ItemLinks']['ItemLink'][2]['URL']))
+      #@doc = Nokogiri::HTML(open(@item['ItemLinks']['ItemLink'][2]['URL']))
       end
   end
 
   def tweetsAnalysis
+    byebug
+    require 'net/http'
     query = params[:query]
+    postData = Net::HTTP.post_form(URI.parse('http://localhost:8080/stream/kafka'), {'keyword'=> query.gsub(' ', '')})
+    # Net::HTTP.get_print(postData)
+    puts "******************************************************************************"
     twitter_client = Rails.cache.read("twitter_client")
     topics = [query, query.gsub(' ', '_'), query.gsub(' ', '')]
     twitter_client.filter(track: topics.join(",")) do |tweet|
-      obj = {'id' => tweet.id, 'text' => tweet.text, 'favorite_count' => tweet.favorite_count, 'retweet_count' => tweet.retweet_count, 'created_at' => tweet.created_at}
+      obj = {'id' => tweet.id, 'text' => tweet.text, 'favoriteCount' => tweet.favorite_count, 'retweetCount' => tweet.retweet_count, 'createdAt' => tweet.created_at}
+
       # sending the twitter obj to a kafka topic, a kafka server should be running
-      # producer.produce(obj, topic: query.gsub(' ', ''))
-      byebug
+      $kafka_producer.produce(tweet.text, topic: query.gsub(' ', ''))
+
+      
+      
     end
   end
 end
