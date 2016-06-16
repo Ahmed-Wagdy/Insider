@@ -8,11 +8,11 @@ class ApiController < ApplicationController
     require 'vacuum'
     amazon_request = Vacuum.new('UK')
     #hast it on git hub only for keys
-   #  amazon_request.configure(
-    #     aws_access_key_id: 'AKIAIOFOSMSJUOFHJX5A',
-    #     aws_secret_access_key: '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',
-    #     associate_tag: 'tag'
-    #)
+     amazon_request.configure(
+         aws_access_key_id: 'AKIAIOFOSMSJUOFHJX5A',
+         aws_secret_access_key: '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',
+         associate_tag: 'tag'
+    )
     Rails.cache.write("amazon_request", amazon_request)
 
 
@@ -50,7 +50,7 @@ class ApiController < ApplicationController
     @myQuery=params[:query]
     type = params[:type]
     # require 'wikipedia'
-    @query_summary = Wikipedia.find(query)
+    #@query_summary = Wikipedia.find(query)
 
     if type == 'place'
       require "net/http"

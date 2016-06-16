@@ -43,7 +43,6 @@
           <h2 class="quick">Quick Overview:</h2>
           <p class="quick_desc" style="color: white">Product Rate : <%= @alldoc.css(".averageStarRatingNumerical span").inner_html%></p>
           <p class="quick_desc" style="color: white">total Reviews : <%= @alldoc.css(".totalReviewCount").inner_html%></p>
-          <%= @alldoc.css(".a-spacing-top-mini.a-row :nth-child(1) span").inner_html %>
         </div>
         <div class="clearfix"> </div>
       </div>
@@ -54,18 +53,26 @@
       <%
       ratecat=[]
       rateval=[]
-      ratecat.push("5 stars")
-      ratecat.push("4 stars")
-      ratecat.push("3 stars")
-      ratecat.push("2 stars")
-      ratecat.push("1 star")
+
+     
+        ratecat.push("5 stars")
+        ratecat.push("4 stars")
+        ratecat.push("3 stars")
+        ratecat.push("2 stars")
+        ratecat.push("1 star")
+
+        rateval.push(@alldoc.css("#histogramTable").children[0].children[2].children[0].inner_html.to_i)
     
-      rateval.push(@alldoc.css("#histogramTable").children[0].children[2].children[0].inner_html.to_i)
-      rateval.push(@alldoc.css("#histogramTable").children[1].children[2].children[0].inner_html.to_i)
-      rateval.push(@alldoc.css("#histogramTable").children[2].children[2].children[0].inner_html.to_i)
-      rateval.push(@alldoc.css("#histogramTable").children[3].children[2].children[0].inner_html.to_i)
-      rateval.push(@alldoc.css("#histogramTable").children[4].children[2].children[0].inner_html.to_i)
+        rateval.push(@alldoc.css("#histogramTable").children[1].children[2].children[0].inner_html.to_i)
+     
+        rateval.push(@alldoc.css("#histogramTable").children[2].children[2].children[0].inner_html.to_i)
+     
+        rateval.push(@alldoc.css("#histogramTable").children[3].children[2].children[0].inner_html.to_i)
+    
+        rateval.push(@alldoc.css("#histogramTable").children[4].children[2].children[0].inner_html.to_i)
+      
       %>
+    
       <script>
         var ctx = document.getElementById("myChart");
         var myChart = new Chart(ctx, {
@@ -115,7 +122,9 @@
             <div class="tab-1 resp-tab-content" aria-labelledby="tab_item-0">
               <div class="facts">
                 <ul class="tab_list" style="color: white">
-                  <li><a href="#"><%= @alldoc.css(".a-expander-content").children[5].children[0].text() %></a></li>
+                  <li><a href="#"><%= if @alldoc.css(".a-expander-content").children[5] != nil && @alldoc.css(".a-expander-content") != nil && @alldoc.css(".a-expander-content").children[5].children[0] != nil
+                    @alldoc.css(".a-expander-content").children[5].children[0].text()
+                    end %></a></li>
                  
                 </ul>
               </div>
@@ -123,7 +132,9 @@
             <div class="tab-1 resp-tab-content" aria-labelledby="tab_item-1" style="color: white">
               <div class="facts">
                 <ul class="tab_list" style="color: white">
-                  <li><a href="#"><%= @alldoc.css("#viewpoint-R6ABAI0SF9AHH").children[0].children[5].children[0].text() %></a></li>
+                  <li><a href="#"><%= if @alldoc.css("#viewpoint-R6ABAI0SF9AHH").children[0]!= nil && @alldoc.css("#viewpoint-R6ABAI0SF9AHH") !=nil && @alldoc.css("#viewpoint-R6ABAI0SF9AHH").children[0].children[5] !=nil && @alldoc.css("#viewpoint-R6ABAI0SF9AHH").children[0].children[5].children[0]!=nil
+                      @alldoc.css("#viewpoint-R6ABAI0SF9AHH").children[0].children[5].children[0].text()
+                  end %></a></li>
                  
                 </ul>
               </div>
