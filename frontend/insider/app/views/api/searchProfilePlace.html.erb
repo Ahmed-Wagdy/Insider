@@ -68,6 +68,16 @@
         });
     });
 </script>
+<!-- <div class="w3-content" style="max-width:800px;position:relative">
+<% @item.photos.groups[0].items.each do |photo| %>
+  <img class="mySlides" src="<%= photo.prefix %>100x100<%= photo.suffix %>" style="width:50%">
+<% end %>
+<a class="w3-btn-floating" style="position:absolute;top:45%;left:0" onclick="plusDivs(-1)">❮</a>
+<a class="w3-btn-floating" style="position:absolute;top:45%;right:0" onclick="plusDivs(1)">❯</a>
+</div> -->
+
+
+<link rel="stylesheet" href="http://www.w3schools.com/lib/w3.css">
 <style>
   .men{
       margin-top: -204px;
@@ -80,7 +90,35 @@
         <div class="labout span_1_of_a1">
           <div class="flexslider">
             <ul class="slides">
-              <%= image_tag("s1.jpg")%>
+
+              <div class="w3-content" style="max-width:800px;position:relative">
+                <% @item.photos.groups[0].items.each do |photo| %>
+                  <img class="mySlides" src="<%= photo.prefix %>100x100<%= photo.suffix %>" style="width:100%">
+                <% end %>
+                <a class="w3-btn-floating" style="position:absolute;top:45%;left:0" onclick="plusDivs(-1)">❮</a>
+                <a class="w3-btn-floating" style="position:absolute;top:45%;right:0" onclick="plusDivs(1)">❯</a>
+              </div>
+
+              <script>
+var slideIndex = 1;
+showDivs(slideIndex);
+
+function plusDivs(n) {
+  showDivs(slideIndex += n);
+}
+
+function showDivs(n) {
+  var i;
+  var x = document.getElementsByClassName("mySlides");
+  if (n > x.length) {slideIndex = 1}
+  if (n < 1) {slideIndex = x.length}
+  for (i = 0; i < x.length; i++) {
+     x[i].style.display = "none";
+  }
+  x[slideIndex-1].style.display = "block";
+}
+</script>
+
             </ul>
           </div>
           <div class="clearfix"></div>
@@ -93,9 +131,11 @@
             <%= @item.location.address %> , <%= @item.location.neighborhood %> , <%= @item.location.state %>
           </div>
           <h2 class="quick">Quick Overview:</h2>
+          <p>Rating</p><meter value="<%= @item.rating %>" min="0" max="10"></meter>(<%= @item.ratingSignals %>)<br>
           <p class="quick_desc" style="color: white">
             <%= @item.name %> is under category of  <%= @item.categories[0].name%><br>
             <a href="https://www.facebook.com/<%=  @item.contact.facebookUsername %>"><i class="fa fa-facebook" style="color: white" aria-hidden="true"></i></a>
+            <a href="http://www.twitter.com/<%= @item.contact.twitter %>"><i class="fa fa-twitter-square" aria-hidden="true"></i></a>
 
           </p>
 
@@ -132,10 +172,9 @@
             <div class="tab-1 resp-tab-content" aria-labelledby="tab_item-2" style="color: white">
               <div class="facts">
                 <ul class="tab_list" style="color: white;">
-                  <li><a href="#">Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat</a></li>
-                  <li><a href="#">augue duis dolore te feugait nulla facilisi. Nam liber tempor cum soluta nobis eleifend option congue nihil imperdiet doming id quod mazim placerat facer possim assum. Typi non habent claritatem insitam; est usus legentis in iis qui facit eorum claritatem. Investigatione</a></li>
-                  <li><a href="#">claritatem insitam; est usus legentis in iis qui facit eorum claritatem. Investigationes demonstraverunt lectores leg</a></li>
-                  <li><a href="#">Mirum est notare quam littera gothica, quam nunc putamus parum claram, anteposuerit litterarum formas humanitatis per seacula quarta decima et quinta decima. Eodem modo typi, qui nunc nobis videntur parum clari, fiant sollemnes in futurum.</a></li>
+                  <% @item.tips.groups[1].items.each do |tip| %>
+                    <li><%= tip.text %>  <button type="button" class="btn btn-primary">Likes <span class="badge"><%= tip.likes.count %></span></button></li>
+                  <% end %>
                 </ul>
               </div>
             </div>

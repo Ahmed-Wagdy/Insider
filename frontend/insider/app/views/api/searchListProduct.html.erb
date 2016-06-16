@@ -132,6 +132,11 @@
     border-bottom: 1px dotted #ccc;
   }
 </style>
+<script type="text/javascript">
+$(document).ready(function(){
+  analyzeTweets("<%= @query %>");
+});
+</script>
 <%= render 'searchForm' %>
 <%=@detailurl%>
 
