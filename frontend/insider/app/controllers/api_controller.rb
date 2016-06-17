@@ -9,11 +9,11 @@ class ApiController < ApplicationController
     amazon_request = Vacuum.new('UK')
     #hast it on git hub only for keys
 
-     amazon_request.configure(
-         aws_access_key_id: 'AKIAIOFOSMSJUOFHJX5A',
-         aws_secret_access_key: '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',
-         associate_tag: 'tag'
-    )
+    # amazon_request.configure(
+    #     aws_access_key_id: 'AKIAIOFOSMSJUOFHJX5A',
+    #     aws_secret_access_key: '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',
+    #     associate_tag: 'tag'
+    # )
 
     Rails.cache.write("amazon_request", amazon_request)
 
@@ -87,13 +87,14 @@ class ApiController < ApplicationController
       itemid = params[:itemid]
       
       if type == 'place'
-      	fs_client = Rails.cache.read("fs_client")
-      	@item = fs_client.venue(itemid)
+        fs_client = Rails.cache.read("fs_client")
+        @item = fs_client.venue(itemid)
         byebug
-      	render 'searchProfilePlace'
+        render 'searchProfilePlace'
+
       elsif type == 'product'
-      	amazon_request = Rails.cache.read("amazon_request")
-      	@result = amazon_request.item_lookup(
+        amazon_request = Rails.cache.read("amazon_request")
+        @result = amazon_request.item_lookup(
        query: {
          'ItemId' => itemid
        }
@@ -109,13 +110,21 @@ class ApiController < ApplicationController
   end
 
   def tweetsAnalysis
+    byebug
+    require 'net/http'
     query = params[:query]
+    postData = Net::HTTP.post_form(URI.parse('http://localhost:8080/stream/kafka'), {'keyword'=> query.gsub(' ', '')})
+    # Net::HTTP.get_print(postData)
+    puts "******************************************************************************"
     twitter_client = Rails.cache.read("twitter_client")
     topics = [query, query.gsub(' ', '_'), query.gsub(' ', '')]
     twitter_client.filter(track: topics.join(",")) do |tweet|
-      obj = {'id' => tweet.id, 'text' => tweet.text, 'favorite_count' => tweet.favorite_count, 'retweet_count' => tweet.retweet_count, 'created_at' => tweet.created_at}
+      obj = {'id' => tweet.id, 'text' => tweet.text, 'favoriteCount' => tweet.favorite_count, 'retweetCount' => tweet.retweet_count, 'createdAt' => tweet.created_at}
+
       # sending the twitter obj to a kafka topic, a kafka server should be running
-      # producer.produce(obj, topic: query.gsub(' ', ''))
+
+      $kafka_producer.produce(tweet.text, topic: query.gsub(' ', ''))
+
       # byebug  
     end
   end
@@ -124,3 +133,4 @@ class ApiController < ApplicationController
     render :json => {xAxis: ['positive','negative','neutral'],yAxis: [10,20,30]}
   end
 end
+

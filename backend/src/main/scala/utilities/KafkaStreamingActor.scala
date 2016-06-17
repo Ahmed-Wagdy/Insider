@@ -1,21 +1,23 @@
 package utilities
 
 import akka.actor.{ActorRef, Actor}
-import akka.actor.Actor.Receive
-import kafka.common.TopicAndPartition
-import kafka.message.MessageAndMetadata
-import kafka.serializer.{ StringDecoder, DefaultDecoder }
+import com.google.gson.Gson
+import kafka.serializer.{StringDecoder, DefaultDecoder}
 import org.apache.spark.{SparkContext, SparkConf}
-import org.apache.spark.rdd.RDD
-import org.apache.spark.storage.StorageLevel
+
 import org.apache.spark.streaming.{Milliseconds, Minutes, Seconds, StreamingContext}
 import org.apache.spark.streaming.kafka.KafkaUtils
-import com.google.gson._
+
+import com.datastax.spark.connector.streaming._
+
+
+import PolarityBasic._
+
 
 /**
- * Created by droidman on 22/05/16.
- */
-class KafkaStreamingActor(ssc :StreamingContext, settings: InsiderSettings, topic :String, supervisor: ActorRef) extends Actor{
+  * Created by droidman on 22/05/16.
+  */
+class KafkaStreamingActor(ssc: StreamingContext, settings: InsiderSettings, topic: String, supervisor: ActorRef) extends Actor with Serializable{
 
   import settings._
 
@@ -26,7 +28,7 @@ class KafkaStreamingActor(ssc :StreamingContext, settings: InsiderSettings, topi
 
   val kafkaStream = {
 
-//    val topics = new TopicAndPartition("twitter1", 0)
+    //    val topics = new TopicAndPartition("twitter1", 0)
 
     //create a stream for each kafka partition to parallelize the read process from kafka
     val streams = (1 to noOfPartitions) map { _ =>
@@ -43,18 +45,18 @@ class KafkaStreamingActor(ssc :StreamingContext, settings: InsiderSettings, topi
     unifiedStream
   }
 
-//  val gson = new Gson()
+    val gson = new Gson()
+
   //  val androidCount = kafkaStream.map(json => gson.fromJson(json, classOf[Tweet]).source).filter(_.contains("Twitter for Android")).count()
   //  kafkaStream.map(json => gson.fromJson(json, classOf[Tweet]).text)
   //      .flatMap(_.split(" ")).map(word => (word, 1L)).reduceByKeyAndWindow(_ + _, _ - _, Minutes(10), Seconds(2), 2).print()
 
   //  kafkaStream.map(gson.fromJson(_, classOf[Tweet]).source).filter(_.contains("iPhone")).print()
 
-//  kafkaStream.saveAsTextFiles("test1")
+  //  kafkaStream.saveAsTextFiles("test1")
+kafkaStream.map{tweet=>
 
-  kafkaStream.foreachRDD { rdd =>
-    //rdd.map(tweet => ) add to cassandra & apply algorithm
-  }
+  new Tuple2 (tweet,evaluate(tweet))}.saveToCassandra("insider",topic)
 
   ssc.start()
   ssc.checkpoint(streamingCheckpoint) // a check point must be specified for spark streaming

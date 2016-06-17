@@ -13,6 +13,7 @@ import utilities.TwitterHelper.{StartCollecting, ProduceTweetToKafka, Tweet}
 import akka.pattern.gracefulStop
 import scala.concurrent.duration._
 
+
 /**
   * Created by droidman on 27/05/16.
   */
@@ -20,6 +21,8 @@ class SupervisorActor(sc :SparkContext, settings: InsiderSettings) extends Actor
 
 
   private implicit val formats = Serialization.formats(ShortTypeHints(List(classOf[senResult])))
+
+  val db = new DBAccess(sc)
 
   def toJson(result: senResult): String = Serialization.writePretty(result)
 
@@ -38,7 +41,9 @@ class SupervisorActor(sc :SparkContext, settings: InsiderSettings) extends Actor
       println(s)
 
     case InitializeStream(s) =>
+      db.createTwitterTable("insider",s)
       context.actorOf(Props(new KafkaStreamingActor(ssc, settings, s, self)), s)
+
       println(s, "streaming initialized")
 
     case KillActor(s) =>
@@ -68,11 +73,10 @@ class SupervisorActor(sc :SparkContext, settings: InsiderSettings) extends Actor
       }
     } ~
     post {
-      path("search" / "twitter") {
+      path("stream" / "kafka") {
         parameters("keyword".as[String]) { (keyword ) =>
            self ! InitializeStream(keyword)
           topicsMap += keyword -> senResult(0,0)
-
           complete {
             "OK"
 
