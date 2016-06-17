@@ -8,19 +8,13 @@ class ApiController < ApplicationController
     require 'vacuum'
     amazon_request = Vacuum.new('UK')
     #hast it on git hub only for keys
-<<<<<<< HEAD
-    # amazon_request.configure(
-    #     aws_access_key_id: 'AKIAIOFOSMSJUOFHJX5A',
-    #     aws_secret_access_key: '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',
-    #     associate_tag: 'tag'
-    # )
-=======
+
      amazon_request.configure(
          aws_access_key_id: 'AKIAIOFOSMSJUOFHJX5A',
          aws_secret_access_key: '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',
          associate_tag: 'tag'
     )
->>>>>>> 80804a4ac9204d133101a4e25ef9a4994863fc02
+
     Rails.cache.write("amazon_request", amazon_request)
 
 
@@ -65,7 +59,7 @@ class ApiController < ApplicationController
       require "uri"
       fs_client = Rails.cache.read("fs_client")
       # client_ip = request.remote_ip
-      client_ip = '41.234.17.232'
+      client_ip = '41.234.8.22'
       uri = URI.parse('http://freegeoip.net/json/'+client_ip)
       response = Net::HTTP.get_response(uri)
       location = JSON.parse(response.body)
@@ -122,7 +116,11 @@ class ApiController < ApplicationController
       obj = {'id' => tweet.id, 'text' => tweet.text, 'favorite_count' => tweet.favorite_count, 'retweet_count' => tweet.retweet_count, 'created_at' => tweet.created_at}
       # sending the twitter obj to a kafka topic, a kafka server should be running
       # producer.produce(obj, topic: query.gsub(' ', ''))
-      byebug  
+      # byebug  
     end
+  end
+
+  def getSentimentData
+    render :json => {xAxis: ['positive','negative','neutral'],yAxis: [10,20,30]}
   end
 end
