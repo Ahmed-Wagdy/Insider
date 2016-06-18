@@ -1,3 +1,4 @@
+require 'cassandra'
 class ApiController < ApplicationController
   def index
 
@@ -130,7 +131,20 @@ class ApiController < ApplicationController
   end
 
   def getSentimentData
-    render :json => {xAxis: ['positive','negative','neutral'],yAxis: [10,20,30]}
+    cluster = Cassandra.cluster
+    keyspace = 'demo'
+    session  = cluster.connect(keyspace)
+    query = params[:query]
+    $mytable=query.gsub(' ', '')
+
+    session.execute("SELECT count(*) FROM #{$mytable} WHERE status='pos' ALLOW FILTERING").each do |rpos|
+    $positive= rpos['count']
+    end
+    session.execute("SELECT count(*) FROM #{$mytable} WHERE status='neg' ALLOW FILTERING").each do |rneg|
+    $negative= rneg['count']
+    end
+    render :json => {xAxis: ['positive','negative','neutral'],yAxis: [$positive,$negative,30]}
   end
+
 end
 
