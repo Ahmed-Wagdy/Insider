@@ -5,8 +5,8 @@ import twitter4j.conf.ConfigurationBuilder
 
 
 /**
- * Created by droidman on 24/05/16.
- */
+  * Created by droidman on 24/05/16.
+  */
 object TwitterHelper {
   val settings = new InsiderSettings()
   import settings._

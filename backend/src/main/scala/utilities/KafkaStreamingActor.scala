@@ -1,8 +1,13 @@
 package utilities
 
+import java.util
+import java.util.Properties
+
 import akka.actor.{ActorRef, Actor}
 import com.google.gson.Gson
+import kafka.consumer.{Whitelist, Consumer, ConsumerConfig}
 import kafka.serializer.{StringDecoder, DefaultDecoder}
+import org.apache.kafka.clients.consumer.{ConsumerRecords, ConsumerRecord, KafkaConsumer}
 import org.apache.spark.{SparkContext, SparkConf}
 
 import org.apache.spark.streaming.{Milliseconds, Minutes, Seconds, StreamingContext}
@@ -17,7 +22,7 @@ import PolarityBasic._
 /**
   * Created by droidman on 22/05/16.
   */
-class KafkaStreamingActor(ssc: StreamingContext, settings: InsiderSettings, topic: String, supervisor: ActorRef) extends Actor with Serializable{
+class KafkaStreamingActor(settings: InsiderSettings, topic: String, supervisor: ActorRef, db: DBAccess) extends Actor{
 
   import settings._
 
@@ -25,27 +30,29 @@ class KafkaStreamingActor(ssc: StreamingContext, settings: InsiderSettings, topi
     case _ =>
   }
 
+  kafkaConsumerProps.put("group.id", topic)
 
-  val kafkaStream = {
+  val config = new ConsumerConfig(kafkaConsumerProps)
 
-    //    val topics = new TopicAndPartition("twitter1", 0)
+  val consumer = Consumer.create(config)
 
-    //create a stream for each kafka partition to parallelize the read process from kafka
-    val streams = (1 to noOfPartitions) map { _ =>
-      //create a stream from last offset
-      KafkaUtils.createDirectStream[String, String, StringDecoder, StringDecoder](ssc, kafkaParams, Set(topic)).map(_._2)
-    }
-    //unify the streams into single Dstream
-    val unifiedStream = ssc.union(streams)
+  val topicCounts = Map(topic->1)
 
-    //set higher repartition value for production. spark runs a task for each partition on a single core
-    //controlling no. of partitions will allow us to control the processing performance and parallelism
-    //unifiedStream.repartition(2)
+  val consumerMap = consumer.createMessageStreams(topicCounts)
 
-    unifiedStream
+  val consumerIterator = consumerMap.get(topic).get.head.iterator()
+
+  val msgs = consumerIterator.map(_.message())
+
+  msgs.foreach{
+    msg=>
+      db.insert("insider",topic, new String(msg),evaluate(new String(msg)))
   }
 
-    val gson = new Gson()
+
+
+
+  //    val gson = new Gson()
 
   //  val androidCount = kafkaStream.map(json => gson.fromJson(json, classOf[Tweet]).source).filter(_.contains("Twitter for Android")).count()
   //  kafkaStream.map(json => gson.fromJson(json, classOf[Tweet]).text)
@@ -54,12 +61,9 @@ class KafkaStreamingActor(ssc: StreamingContext, settings: InsiderSettings, topi
   //  kafkaStream.map(gson.fromJson(_, classOf[Tweet]).source).filter(_.contains("iPhone")).print()
 
   //  kafkaStream.saveAsTextFiles("test1")
-kafkaStream.map{tweet=>
+  //
+  //  new Tuple2 (tweet,evaluate(tweet))}.saveToCassandra("insider",topic)
+  //
 
-  new Tuple2 (tweet,evaluate(tweet))}.saveToCassandra("insider",topic)
-
-  ssc.start()
-  ssc.checkpoint(streamingCheckpoint) // a check point must be specified for spark streaming
-  ssc.awaitTermination()
 
 }

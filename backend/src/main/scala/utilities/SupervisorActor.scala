@@ -1,6 +1,9 @@
 package utilities
 
 
+import akka.actor.Actor.Receive
+import kafka.serializer.StringDecoder
+import org.apache.spark.streaming.kafka.KafkaUtils
 import org.json4s.native.Serialization
 import org.json4s.ShortTypeHints
 import spray.routing.SimpleRoutingApp
@@ -32,9 +35,8 @@ class SupervisorActor(sc :SparkContext, settings: InsiderSettings) extends Actor
 
 
 
-  val ssc = new StreamingContext(sc, Milliseconds(StreamingBatchInterval))
-
-
+  val sparkActor = context.actorOf(Props(new sparkActor(sc, settings)), "sparkActor")
+  sparkActor ! 1
 
   override def receive = {
     case s :String =>
@@ -42,7 +44,7 @@ class SupervisorActor(sc :SparkContext, settings: InsiderSettings) extends Actor
 
     case InitializeStream(s) =>
       db.createTwitterTable("insider",s)
-      context.actorOf(Props(new KafkaStreamingActor(ssc, settings, s, self)), s)
+      context.actorOf(Props(new KafkaStreamingActor(settings, s, self,db)), s)
 
       println(s, "streaming initialized")
 
@@ -65,25 +67,48 @@ class SupervisorActor(sc :SparkContext, settings: InsiderSettings) extends Actor
     get {
       path("getresult" / Segment ) { topic =>
         complete{
-//          topicsMap(topic).posCount=1
+          //          topicsMap(topic).posCount=1
           toJson(topicsMap(topic))
 
 
         }
       }
     } ~
-    post {
-      path("stream" / "kafka") {
-        parameters("keyword".as[String]) { (keyword ) =>
-           self ! InitializeStream(keyword)
-          topicsMap += keyword -> senResult(0,0)
-          complete {
-            "OK"
+      post {
+        path("stream" / "kafka") {
+          parameters("keyword".as[String]) { (keyword ) =>
+            self ! InitializeStream(keyword)
+            topicsMap += keyword -> senResult(0,0)
+            complete {
+              "OK"
 
+            }
           }
         }
       }
-    }
 
-    }
   }
+
+
+}
+
+class sparkActor(sc :SparkContext, settings: InsiderSettings) extends Actor{
+  import settings._
+  override def receive = {
+    case _ =>
+      println("messege rec")
+      val ssc = new StreamingContext(sc, Milliseconds(StreamingBatchInterval))
+      val lines = ssc.socketTextStream("localhost", 9999)
+      lines.foreachRDD{rdd =>
+        if(!rdd.isEmpty()) println(rdd.first())
+
+      }
+      ssc.start()
+      ssc.checkpoint(streamingCheckpoint) // a check point must be specified for spark streaming
+      ssc.awaitTermination()
+
+
+
+  }
+
+}

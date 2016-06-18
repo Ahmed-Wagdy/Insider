@@ -1,5 +1,7 @@
 package utilities
 
+import java.util.Properties
+
 import com.typesafe.config.{Config, ConfigFactory}
 
 /**
@@ -60,10 +62,14 @@ final class InsiderSettings(conf: Option[Config] = None) extends Serializable {
   val StreamingBatchInterval = spark.getInt("streaming.batch.interval")
   val streamingCheckpoint = spark.getString("spark.checkpoint.dir")
 
-  val kafkaParams = Map(
-    "zookeeper.connect" -> kafka.getString("zookeeper.connect"),
-    "group.id" -> kafka.getString("group.id"),
-    "zookeeper.connection.timeout.ms" -> kafka.getInt("zookeeper.connection.timeout.ms").toString,
-    "metadata.broker.list" -> kafka.getString("metadata.broker.list"))
+  val kafkaConsumerProps = new Properties()
+
+  kafkaConsumerProps.put("bootstrap.servers", bootstrap_servers)
+  kafkaConsumerProps.put("enable.auto.commit", "true");
+  kafkaConsumerProps.put("auto.commit.interval.ms", "1000");
+  kafkaConsumerProps.put("session.timeout.ms", "30000");
+  kafkaConsumerProps.put("key.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
+  kafkaConsumerProps.put("value.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
+  kafkaConsumerProps.put("zookeeper.connect", "localhost:2181")
 
 }

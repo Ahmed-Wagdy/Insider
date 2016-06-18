@@ -33,22 +33,16 @@ class DBAccess(sc: SparkContext) extends Serializable{
   def createTwitterTable(ksname: String, tableName: String): Unit = {
     CassandraConnector(conf).withSessionDo { session =>
       // session.execute("DROP TABLE IF EXISTS test.sql_demo")
-      session.execute( s"""CREATE TABLE IF NOT EXISTS $ksname.${tableName} (text varchar PRIMARY KEY, Val varchar)""")
+      session.execute( s"""CREATE TABLE IF NOT EXISTS $ksname.${tableName} (text varchar , status varchar , primary key(text,status))""")
     }
 
   }
 
-  def insert(ksname: String, tableName: String, id: Int, text: String, favoriteCount: Int, retweetCount: Int,createdAt: String ,  Val: String): Unit = {
+  def insert(ksname: String, tableName: String, text: String,  status: String): Unit = {
     CassandraConnector(conf).withSessionDo { session =>
-      session.execute(s"""INSERT INTO $ksname.${tableName}(id, text, favoriteCount, retweetCount, createdAt, Val ) VALUES (${id}, '${text}', ${favoriteCount}, ${retweetCount}, '${createdAt}', '${Val}')""")
+      session.execute(s"""INSERT INTO $ksname.${tableName}(text, status ) VALUES ('${text}', '${status}')""")
     }
 
   }
 
-  def insert2(ksname: String, tableName: String, text: String): Unit = {
-    CassandraConnector(conf).withSessionDo { session =>
-      session.execute(s"""INSERT INTO $ksname.${tableName}(name) VALUES ('${text}'""")
-    }
-
-  }
 }

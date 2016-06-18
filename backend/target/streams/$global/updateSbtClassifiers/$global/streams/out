@@ -754,9 +754,9 @@
 [debug] 	[NOT REQUIRED] org.scala-sbt#test-agent;0.13.8!test-agent.jar
 [debug] 	[NOT REQUIRED] org.scala-sbt#test-interface;1.0!test-interface.jar
 [debug] 	[NOT REQUIRED] org.scala-sbt#apply-macro;0.13.8!apply-macro.jar
-[debug] :: resolution report :: resolve 2637ms :: artifacts dl 75ms
+[debug] :: resolution report :: resolve 2141ms :: artifacts dl 101ms
 [debug] 	report for utilities#utilities$sbt_2.10;1.0 default produced in /run/media/ahmed/Data/ITI/Insider/Insider/backend/target/resolution-cache/reports/utilities-utilities$sbt_2.10-default.xml
-[debug] 	resolve done (2637ms resolve - 75ms download)
+[debug] 	resolve done (2141ms resolve - 101ms download)
 [debug] Using inline dependencies specified in Scala.
 [debug] :: resolving dependencies :: utilities#utilities$sources_2.10;1.0
 [debug] 	confs: [default]
@@ -1120,6 +1120,6 @@
 [debug] 	[NOT REQUIRED] org.scala-sbt#precompiled-2_8_2;0.13.8!precompiled-2_8_2.jar(src)
 [debug] 	[NOT REQUIRED] org.scala-sbt#precompiled-2_9_2;0.13.8!precompiled-2_9_2.jar(src)
 [debug] 	[NOT REQUIRED] org.scala-sbt#precompiled-2_9_3;0.13.8!precompiled-2_9_3.jar(src)
-[debug] :: resolution report :: resolve 442ms :: artifacts dl 63ms
+[debug] :: resolution report :: resolve 319ms :: artifacts dl 91ms
 [debug] 	report for utilities#utilities$sources_2.10;1.0 default produced in /run/media/ahmed/Data/ITI/Insider/Insider/backend/target/resolution-cache/reports/utilities-utilities$sources_2.10-default.xml
-[debug] 	resolve done (442ms resolve - 63ms download)
+[debug] 	resolve done (319ms resolve - 91ms download)
