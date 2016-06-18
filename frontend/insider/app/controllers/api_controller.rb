@@ -89,7 +89,7 @@ class ApiController < ApplicationController
       if type == 'place'
         fs_client = Rails.cache.read("fs_client")
         @item = fs_client.venue(itemid)
-        byebug
+     #   byebug
         render 'searchProfilePlace'
 
       elsif type == 'product'
@@ -110,7 +110,7 @@ class ApiController < ApplicationController
   end
 
   def tweetsAnalysis
-    byebug
+   byebug
     require 'net/http'
     query = params[:query]
     postData = Net::HTTP.post_form(URI.parse('http://localhost:8080/stream/kafka'), {'keyword'=> query.gsub(' ', '')})
@@ -123,14 +123,15 @@ class ApiController < ApplicationController
 
       # sending the twitter obj to a kafka topic, a kafka server should be running
 
-      $kafka_producer.produce(tweet.text, topic: query.gsub(' ', ''))
+      #$kafka_producer.produce(tweet.text, topic: query.gsub(' ', ''))
 
       # byebug  
     end
   end
 
   def getSentimentData
-    render :json => {xAxis: ['positive','negative','neutral'],yAxis: [10,20,30]}
+    
+    render :json => {xAxis: ['positive','negative','neutral'],yAxis: [10,10,20]}
   end
 end
 

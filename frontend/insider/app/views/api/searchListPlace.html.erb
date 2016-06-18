@@ -150,7 +150,7 @@
 <script type="text/javascript">
 $(document).ready(function(){
   drawChart(<%= raw placeNames%>,<%= placeCheckIn %>,'doughnut','myChart');
-  // setInterval(drawSentimentChart, 3000);
+  setInterval(drawSentimentChart, 3000);
   drawSentimentChart();
   // setTimeout(function(){ analyzeTweets("<%= @query %>"); }, 5000);
   analyzeTweets("<%= @query %>");
@@ -204,7 +204,6 @@ $(document).ready(function(){
               <br>
               <a href="http://www.facebook.com/<%= place.contact.facebook %>"><i class="fa fa-facebook-official" aria-hidden="true"></i></a>
               <a href="http://www.twitter.com/<%= place.contact.twitter %>"><i class="fa fa-twitter-square" aria-hidden="true"></i></a>
-              <span class="plus"><a href="#" title="Lorem ipsum"><i class="glyphicon glyphicon-plus"></i></a></span>
             </div>
             <span class="clearfix borda"></span>
           </article>
