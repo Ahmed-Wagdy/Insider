@@ -59,7 +59,7 @@ class ApiController < ApplicationController
       require "uri"
       fs_client = Rails.cache.read("fs_client")
       # client_ip = request.remote_ip
-      client_ip = '41.234.8.22'
+      client_ip = '81.21.107.92'
       uri = URI.parse('http://freegeoip.net/json/'+client_ip)
       response = Net::HTTP.get_response(uri)
       location = JSON.parse(response.body)
@@ -89,7 +89,6 @@ class ApiController < ApplicationController
       if type == 'place'
         fs_client = Rails.cache.read("fs_client")
         @item = fs_client.venue(itemid)
-        byebug
         render 'searchProfilePlace'
 
       elsif type == 'product'
