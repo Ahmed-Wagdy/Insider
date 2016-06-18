@@ -1,5 +1,9 @@
 require 'cassandra'
 class ApiController < ApplicationController
+  $tweets = []
+  $itr = -1
+  $interval = 10
+  $tweets_size = 5
   def index
 
     # wikipedia API
@@ -10,11 +14,11 @@ class ApiController < ApplicationController
     amazon_request = Vacuum.new('UK')
     #hast it on git hub only for keys
 
-    # amazon_request.configure(
-    #     aws_access_key_id: 'AKIAIOFOSMSJUOFHJX5A',
-    #     aws_secret_access_key: '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',
-    #     associate_tag: 'tag'
-    # )
+    amazon_request.configure(
+        aws_access_key_id: 'AKIAIOFOSMSJUOFHJX5A',
+        aws_secret_access_key: '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',
+        associate_tag: 'tag'
+    )
 
     Rails.cache.write("amazon_request", amazon_request)
 
@@ -110,7 +114,7 @@ class ApiController < ApplicationController
   end
 
   def tweetsAnalysis
-   byebug
+   # byebug
     require 'net/http'
     query = params[:query]
     postData = Net::HTTP.post_form(URI.parse('http://localhost:8080/stream/kafka'), {'keyword'=> query.gsub(' ', '')})
@@ -119,14 +123,30 @@ class ApiController < ApplicationController
     twitter_client = Rails.cache.read("twitter_client")
     topics = [query, query.gsub(' ', '_'), query.gsub(' ', '')]
     twitter_client.filter(track: topics.join(",")) do |tweet|
-      obj = {'id' => tweet.id, 'text' => tweet.text, 'favoriteCount' => tweet.favorite_count, 'retweetCount' => tweet.retweet_count, 'createdAt' => tweet.created_at}
-
+      obj = {'id' => tweet.id, 'text' => tweet.text, 'favoriteCount' => tweet.favorite_count, 'retweetCount' => tweet.retweet_count, 'createdAt' => tweet.created_at, 'local_id' => $itr+=1}
+      # byebug
+      if obj['local_id'] % $interval == 0
+        $tweets.push obj
+      end
+      # if $tweets.size == $tweets_size
+      #   $tweets = []
+      #   $itr = -1        
+      # end
+      # byebug
       # sending the twitter obj to a kafka topic, a kafka server should be running
 
       #$kafka_producer.produce(tweet.text, topic: query.gsub(' ', ''))
 
       # byebug  
     end
+  end
+
+  def getTweets
+    # text = []
+    # $tweets.each do |tweet|
+    #   text.push tweet.text
+    # end
+    render :json => {tweets: $tweets}
   end
 
   def getSentimentData

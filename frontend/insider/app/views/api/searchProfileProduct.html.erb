@@ -69,65 +69,10 @@
       rateval.push(@alldoc.css("#histogramTable").children[3].children[2].children[0].inner_html.to_i)
       rateval.push(@alldoc.css("#histogramTable").children[4].children[2].children[0].inner_html.to_i)
       %>
-
-
-     
-        ratecat.push("5 stars")
-        ratecat.push("4 stars")
-        ratecat.push("3 stars")
-        ratecat.push("2 stars")
-        ratecat.push("1 star")
-
-        rateval.push(@alldoc.css("#histogramTable").children[0].children[2].children[0].inner_html.to_i)
     
-        rateval.push(@alldoc.css("#histogramTable").children[1].children[2].children[0].inner_html.to_i)
-     
-        rateval.push(@alldoc.css("#histogramTable").children[2].children[2].children[0].inner_html.to_i)
-     
-        rateval.push(@alldoc.css("#histogramTable").children[3].children[2].children[0].inner_html.to_i)
-    
-        rateval.push(@alldoc.css("#histogramTable").children[4].children[2].children[0].inner_html.to_i)
-      
-      %>
-    
-
-      <script>
-        var ctx = document.getElementById("myChart");
-        var myChart = new Chart(ctx, {
-          type: 'doughnut',
-          data: {
-            labels: <%= raw ratecat%>,
-            datasets: [{
-              label: '# of rate',
-              data: <%= rateval %>,
-              backgroundColor: [
-                'rgba(255, 99, 132, 0.2)',
-                'rgba(54, 162, 235, 0.2)',
-                'rgba(255, 206, 86, 0.2)',
-                'rgba(75, 192, 192, 0.2)',
-                'rgba(153, 102, 255, 0.2)',
-                'rgba(255, 159, 64, 0.2)'
-              ],
-              borderColor: [
-                'rgba(255,99,132,1)',
-                'rgba(54, 162, 235, 1)',
-                'rgba(255, 206, 86, 1)',
-                'rgba(75, 192, 192, 1)',
-                'rgba(153, 102, 255, 1)',
-                'rgba(255, 159, 64, 1)'
-              ],
-              borderWidth: 1
-            }]
-          },
-          options: {
-            scales: {
-              yAxes: [{
-                ticks: {
-                  beginAtZero:true
-                }
-              }]
-            }
-          }
+      <script type="text/javascript">
+        $(document).ready(function(){
+           drawChart(<%= raw ratecat %>,<%= rateval %>,'doughnut',"myChart");
         });
       </script>
       <div class="sap_tabs">
@@ -141,8 +86,6 @@
               <div class="facts">
                 <ul class="tab_list" style="color: white">
 
-                  <li><a href="#"><%= @alldoc.css(".a-expander-content").children[5].children[0].text() %></a></li>
-
                   <li><a href="#"><%= if @alldoc.css(".a-expander-content").children[5] != nil && @alldoc.css(".a-expander-content") != nil && @alldoc.css(".a-expander-content").children[5].children[0] != nil
                     @alldoc.css(".a-expander-content").children[5].children[0].text()
                     end %></a></li>
@@ -155,9 +98,8 @@
               <div class="facts">
                 <ul class="tab_list" style="color: white">
 
-                  <li><a href="#"><%= @alldoc.css("#viewpoint-R6ABAI0SF9AHH").children[0].children[5].children[0].text() %></a></li>
 
-                  <li><a href="#"><%= if @alldoc.css("#viewpoint-R6ABAI0SF9AHH").children[0]!= nil && @alldoc.css("#viewpoint-R6ABAI0SF9AHH") !=nil && @alldoc.css("#viewpoint-R6ABAI0SF9AHH").children[0].children[5] !=nil && @alldoc.css("#viewpoint-R6ABAI0SF9AHH").children[0].children[5].children[0]!=nil
+                  <li><a href="#"><%= if @alldoc.css("#viewpoint-R6ABAI0SF9AHH").children[0]!= nil && @alldoc.css("#viewpoint-R6ABAI0SF9AHH") !=nil && @alldoc.css("#viewpoint-R6ABAI0SF9AHH").children[0].children[5] !=nil && @alldoc.css("#viewpoint-R6ABAI0SF9AHH").children[0].children[5].children[0]!=nil && @alldoc.css("#viewpoint-R6ABAI0SF9AHH").children[0].children[5].children[0].text()!=nil
                       @alldoc.css("#viewpoint-R6ABAI0SF9AHH").children[0].children[5].children[0].text()
                   end %></a></li>
 
