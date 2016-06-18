@@ -211,6 +211,7 @@ PLATFORMS
 DEPENDENCIES
   bootstrap (~> 4.0.0.alpha3)
   byebug
+  cassandra-driver
   cequel
   coffee-rails (~> 4.1.0)
   font-awesome-rails
