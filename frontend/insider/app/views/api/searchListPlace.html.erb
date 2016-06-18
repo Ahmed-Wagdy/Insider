@@ -132,11 +132,6 @@
     border-bottom: 1px dotted #ccc;
   }
 </style>
-<script type="text/javascript">
-$(document).ready(function(){
-  analyzeTweets("<%= @query %>");
-});
-</script>
 <%= render 'searchForm' %>
 <%
   placeNames=[];
@@ -152,48 +147,26 @@ $(document).ready(function(){
   end
 
 %>
+<script type="text/javascript">
+$(document).ready(function(){
+  drawChart(<%= raw placeNames%>,<%= placeCheckIn %>,'doughnut','myChart');
+  setInterval(drawSentimentChart, 3000);
+  drawSentimentChart();
+  // setTimeout(function(){ analyzeTweets("<%= @query %>"); }, 5000);
+  analyzeTweets("<%= @query %>");
+});
+</script>
+<script type="text/javascript">
+$(document).ready(function(){
+   // setTimeout(function(){ analyzeTweets("<%= @query %>"); }, 5000);
+});
+</script>
 <h1><%=@myQuery%></h1>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.1.5/Chart.js"></script>
 <canvas id="myChart" width="400" height="400" style="background-color: white"></canvas>
-<script>
-  var ctx = document.getElementById("myChart");
-  var myChart = new Chart(ctx, {
-    type: 'doughnut',
-    data: {
-      labels: <%= raw placeNames%>,
-      datasets: [{
-        label: '# of Votes',
-        data: <%= placeCheckIn %>,
-        backgroundColor: [
-          'rgba(255, 99, 132, 0.2)',
-          'rgba(54, 162, 235, 0.2)',
-          'rgba(255, 206, 86, 0.2)',
-          'rgba(75, 192, 192, 0.2)',
-          'rgba(153, 102, 255, 0.2)',
-          'rgba(255, 159, 64, 0.2)'
-        ],
-        borderColor: [
-          'rgba(255,99,132,1)',
-          'rgba(54, 162, 235, 1)',
-          'rgba(255, 206, 86, 1)',
-          'rgba(75, 192, 192, 1)',
-          'rgba(153, 102, 255, 1)',
-          'rgba(255, 159, 64, 1)'
-        ],
-        borderWidth: 1
-      }]
-    },
-    options: {
-      scales: {
-        yAxes: [{
-          ticks: {
-            beginAtZero:true
-          }
-        }]
-      }
-    }
-  });
-</script>
+
+<canvas id="sentimentChart" width="400" height="400" style="background-color: white"></canvas>
+
 <div class="row">
 
   <div class="container">
@@ -231,7 +204,6 @@ $(document).ready(function(){
               <br>
               <a href="http://www.facebook.com/<%= place.contact.facebook %>"><i class="fa fa-facebook-official" aria-hidden="true"></i></a>
               <a href="http://www.twitter.com/<%= place.contact.twitter %>"><i class="fa fa-twitter-square" aria-hidden="true"></i></a>
-              <span class="plus"><a href="#" title="Lorem ipsum"><i class="glyphicon glyphicon-plus"></i></a></span>
             </div>
             <span class="clearfix borda"></span>
           </article>

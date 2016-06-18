@@ -1,3 +1,4 @@
+require 'cassandra'
 class ApiController < ApplicationController
   def index
 
@@ -9,11 +10,13 @@ class ApiController < ApplicationController
     amazon_request = Vacuum.new('UK')
     #hast it on git hub only for keys
 
-    amazon_request.configure(
-        aws_access_key_id: 'AKIAIOFOSMSJUOFHJX5A',
-        aws_secret_access_key: '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',
-        associate_tag: 'tag'
-    )
+    # amazon_request.configure(
+    #     aws_access_key_id: 'AKIAIOFOSMSJUOFHJX5A',
+    #     aws_secret_access_key: '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',
+    #     associate_tag: 'tag'
+    # )
+
+
     Rails.cache.write("amazon_request", amazon_request)
 
 
@@ -58,7 +61,7 @@ class ApiController < ApplicationController
       require "uri"
       fs_client = Rails.cache.read("fs_client")
       # client_ip = request.remote_ip
-      client_ip = '41.234.17.232'
+      client_ip = '81.21.107.92'
       uri = URI.parse('http://freegeoip.net/json/'+client_ip)
       response = Net::HTTP.get_response(uri)
       location = JSON.parse(response.body)
@@ -88,7 +91,6 @@ class ApiController < ApplicationController
       if type == 'place'
         fs_client = Rails.cache.read("fs_client")
         @item = fs_client.venue(itemid)
-        byebug
         render 'searchProfilePlace'
 
       elsif type == 'product'
@@ -109,7 +111,7 @@ class ApiController < ApplicationController
   end
 
   def tweetsAnalysis
-    byebug
+   byebug
     require 'net/http'
     query = params[:query]
     postData = Net::HTTP.post_form(URI.parse('http://localhost:8080/stream/kafka'), {'keyword'=> query.gsub(' ', '')})
@@ -122,14 +124,31 @@ class ApiController < ApplicationController
 
       # sending the twitter obj to a kafka topic, a kafka server should be running
 
-      $kafka_producer.produce(tweet.text, topic: query.gsub(' ', ''))
+      #$kafka_producer.produce(tweet.text, topic: query.gsub(' ', ''))
 
-      
-      
-
-      # producer.produce(obj, topic: query.gsub(' ', ''))
-      byebug  
-
+      # byebug  
     end
   end
+
+  def getSentimentData
+    cluster = Cassandra.cluster
+    keyspace = 'demo'
+    session  = cluster.connect(keyspace)
+    query = params[:query]
+    $mytable=query.gsub(' ', '')
+
+    session.execute("SELECT count(*) FROM #{$mytable} WHERE status='pos' ALLOW FILTERING").each do |rpos|
+      $positive= rpos['count']
+    end
+    session.execute("SELECT count(*) FROM #{$mytable} WHERE status='neg' ALLOW FILTERING").each do |rneg|
+      $negative= rneg['count']
+    end
+    session.execute("SELECT count(*) FROM #{$mytable} WHERE status='neu' ALLOW FILTERING").each do |rneg|
+      $neutral= rneg['count']
+    end
+    render :json => {xAxis: ['positive','negative','neutral'],yAxis: [$positive,$negative,$neutral]}
+  
+  end
+
 end
+
