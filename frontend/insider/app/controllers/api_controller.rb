@@ -20,6 +20,7 @@ class ApiController < ApplicationController
         associate_tag: 'tag'
     )
 
+
     Rails.cache.write("amazon_request", amazon_request)
 
 

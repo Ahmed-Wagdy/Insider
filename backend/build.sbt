@@ -6,6 +6,12 @@ scalaVersion := "2.10.4"
 
 resolvers += "spray repo" at "http://repo.spray.io"
 
+
+
+
+
+
+
 libraryDependencies ++= Seq(
 
   "org.apache.spark" % "spark-sql_2.10" % "1.6.1",

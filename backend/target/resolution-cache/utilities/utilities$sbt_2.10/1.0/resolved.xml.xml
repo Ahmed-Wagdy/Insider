@@ -4,7 +4,7 @@
 		module="utilities$sbt_2.10"
 		revision="1.0"
 		status="integration"
-		publication="20160616195818"
+		publication="20160618094238"
 	/>
 	<configurations>
 		<conf name="default" visibility="public"/>
